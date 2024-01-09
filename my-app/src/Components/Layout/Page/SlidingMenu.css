@@ -1,0 +1,21 @@
+.slider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .image-preview img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .image-list {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .image-list div {
+    margin: 0 5px;
+    cursor: pointer;
+  }
