@@ -3,8 +3,8 @@ import LekoviLista from '../Components/Layout/Page/Lekovi/LekoviLista'
 import Slider from '../Components/Layout/Page/Slider'
 
 let prva = require('../Assets/Images/prva.png');
-let druga = require('../Assets/Images/druga.png');
-let treca = require('../Assets/Images/treca.png');
+let druga = require('../Assets/Images/treca.png');
+let treca = require('../Assets/Images/druga.png');
 function Home() {
   const images = [
     `${prva}`,

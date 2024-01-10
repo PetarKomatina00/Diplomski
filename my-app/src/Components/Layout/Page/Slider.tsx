@@ -21,6 +21,10 @@ function Slider({ images }: ImageSliderProps) {
         }, 3000)
         return () => clearTimeout(timer);
     }, [currentImageIndex])
+
+    const getActiveIndexFromMenuContainer = (index : number) => {
+        setCurrentImageIndex(index - 1);
+    }
     return (
         <div className='slider'>
             <div className='image-preview' style={{ position: "relative" }}>
@@ -40,7 +44,7 @@ function Slider({ images }: ImageSliderProps) {
                     <button onClick={() => setCurrentImageIndex(index)} className='img-slider-dot-btn'>{index === currentImageIndex ? <CircleDot/> : <Circle/>}</button>
                 ))}
             </div> */}
-            <MenuContainer/>
+            <MenuContainer getActiveIndex = {getActiveIndexFromMenuContainer}/>
             <div className='image-list' style={{ overflow: "hidden" }}>
                 {
                     images.map((image: any, index: any) => (
