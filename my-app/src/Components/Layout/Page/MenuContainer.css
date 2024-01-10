@@ -1,0 +1,15 @@
+.menu-container{
+    display: flex;
+    justify-content: space-between;
+    top: 15px;
+}
+.menu-block{
+    flex: 1;
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 20px;
+    transition: background-color 0.3s ease;
+}
+.menu-block:hover{
+    background-color: #eaeaea;
+}

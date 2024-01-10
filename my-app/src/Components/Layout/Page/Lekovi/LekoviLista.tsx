@@ -29,12 +29,12 @@ function LekoviLista() {
         }, 5000)
     }, [isLoading, data])
 
-    if (isLoading || data === undefined) {
+    if (isLoading || data === undefined || !data.isSuccess) {
         return <MainLoader />
     }
     return (
         <div className='container row'>
-            {data.isSuccess &&
+            {data.isSuccess && 
                 data.result.map((lek: LekModel, index: number) => (
                     <LekoviCard lek={lek} key={index} />
                 ))}
