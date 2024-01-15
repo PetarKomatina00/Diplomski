@@ -7,11 +7,18 @@ import { setLekItem } from '../../../../Storage/Redux/LekSlice';
 import MainLoader from './Common/MainLoader';
 import { isNullOrUndefined } from 'util';
 
+const initalDataToPreventDataResultBeingNull = {
+    description : "123",
+    image : "asd",
+    isbn : "123",
+    lekID : "5",
+    nazivLeka : "Mg",
+    price : "111"
+}
 function LekoviLista() {
     //const [lekovi, setLekovi] = useState<LekModel[]>([]);
     const dispatch = useDispatch();
-    const { data, isLoading } = useGetLekoviQuery(null);
-
+    const { data, isLoading } = useGetLekoviQuery(initalDataToPreventDataResultBeingNull);
     useEffect(() => {
         if (!isLoading) {
             if (data) {
@@ -20,16 +27,15 @@ function LekoviLista() {
 
         }
     }, [isLoading])
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         if(!isLoading && data === undefined){
+    //             window.location.reload();
+    //         }
+    //     }, 5000)
+    // }, [isLoading, data])
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if(!isLoading && data === undefined){
-                window.location.reload();
-            }
-        }, 5000)
-    }, [isLoading, data])
-
-    if (isLoading || data === undefined || !data.isSuccess) {
+    if (isLoading || data.result === undefined || !data.isSuccess) {
         return <MainLoader />
     }
     return (

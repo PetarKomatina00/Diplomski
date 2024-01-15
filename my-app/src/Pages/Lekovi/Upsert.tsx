@@ -78,7 +78,7 @@ function Upsert() {
         const formData = new FormData();
         formData.append("NazivLeka", LekInput.name)
         formData.append("Description", LekInput.description)
-        formData.append("ISBN", "1112")
+        formData.append("ISBN", LekInput.isbn)
         formData.append("Price", LekInput.price)
         if(imageToBeDisplayed) formData.append("Image", imageToBeStore)
         // for(let x of formData.values())
@@ -104,7 +104,7 @@ function Upsert() {
         }
         if (response) {
             setIsLoading(false);
-            navigate("/Lekovi/SviLekovi")
+            window.location.replace("/Lekovi/SviLekovi")
         }
         setIsLoading(false);
     }
@@ -134,25 +134,25 @@ function Upsert() {
                             onChange={handleLekInput}
                         >
                         </textarea>
-                        {/* <input
-                            type="text"
-                            className='form-control'
-                            placeholder='Enter Special Tag'
-                            required
-                            name="description"
-                            value={LekInput.name}
-                            onChange={handleLekInput}
-                        /> */}
                         <input
                             type="text"
-                            className='form-control'
+                            className='form-control mt-3'
+                            placeholder='Enter ISBN'
+                            required
+                            name="isbn"
+                            value={LekInput.isbn}
+                            onChange={handleLekInput}
+                        />
+                        <input
+                            type="text"
+                            className='form-control mt-3'
                             placeholder='Enter Price'
                             required
                             name="price"
                             value={LekInput.price}
                             onChange={handleLekInput}
                         />
-                        <input type="file" className='form-control mt-5' onChange={handleFileChange} />
+                        <input type="file" className='form-control mt-3' onChange={handleFileChange} />
                         <div className='row'>
                             <div className='col-6'>
                             <button

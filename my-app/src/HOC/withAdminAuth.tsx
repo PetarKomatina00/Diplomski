@@ -7,7 +7,7 @@ const withAdminAuth = (WrappedComponent: any) => {
             const decode: {
                 role: string;
             } = jwtDecode(localToken);
-            if (decode.role !== "ADMIN") {
+            if (decode.role !== "admin") {
                 window.location.replace("/accessDenied")
                 return null;
             }

@@ -5,13 +5,24 @@ import LekModel from '../../interfaces/LekModel';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import withAdminAuth from '../../HOC/withAdminAuth';
-function SviLekovi() {
-    const { data, isLoading } = useGetLekoviQuery(null);
+
+const initalDataToPreventDataResultBeingNull = {
+    description : "123",
+    image : "asd",
+    isbn : "123",
+    lekID : "5",
+    nazivLeka : "Mg",
+    price : "111"
+}
+const SviLekovi = () => {
+    const { data, isLoading } = useGetLekoviQuery(initalDataToPreventDataResultBeingNull);
     const [deleteLek] = useDeleteLekMutation();
     const navigate = useNavigate();
 
+    const delay = (ms : any) => new Promise(resolve => setTimeout(resolve, ms))
     const handleLekDelete = async (id : number) => {
         deleteLek(id);
+        console.log(id);
         toast.promise(
             deleteLek(id),
             {
@@ -43,6 +54,7 @@ function SviLekovi() {
                             <div className='col-2'>Special Tag</div>
                             <div className='col-2'>Action</div>
                         </div>
+                        
                         {data.result.map((lek: LekModel) => {
                             return (
                                 <div className='row border' key = {lek.lekID}>
@@ -72,7 +84,7 @@ function SviLekovi() {
                                 </div>
                             )
                         })}
-
+                        {console.log(data.result)}
                     </div>
                 </div>
             )}

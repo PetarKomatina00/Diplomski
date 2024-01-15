@@ -36,7 +36,7 @@ function Header() {
                                 <NavLink className="nav-link active" aria-current="page" to="/">Home</NavLink>
                             </li>
 
-                            {userData.role === "CUSTOMER" && <li className="nav-item">
+                            {true && <li className="nav-item">
                                 <NavLink className="nav-link active" aria-current="page" to="/shoppingCart">
                                     <i className="bi bi-cart"></i>
                                     {userData.id && `${shoppingCartFromStore?.length}`}
@@ -53,7 +53,7 @@ function Header() {
                                     Authorization
                                 </NavLink>
                             </li> */}
-                            {userData.role === "ADMIN" && <li className="nav-item dropdown">
+                            {true && <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Admin panel
                                 </a>
