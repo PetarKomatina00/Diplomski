@@ -7,11 +7,11 @@ import { toast } from 'react-toastify';
 import withAdminAuth from '../../HOC/withAdminAuth';
 
 const initalDataToPreventDataResultBeingNull = {
+    nazivLeka : "Mg",
     description : "123",
     image : "asd",
     isbn : "123",
     lekID : "5",
-    nazivLeka : "Mg",
     price : "111"
 }
 const SviLekovi = () => {

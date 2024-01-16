@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import LekModel from '../../../../interfaces/LekModel';
 import LekoviCard from './LekoviCard';
-import { useGetLekoviQuery } from '../../../../API/LekItemApi';
+import { useGetBestSellersQuery, useGetLekoviQuery } from '../../../../API/LekItemApi';
 import { useDispatch } from 'react-redux';
 import { setLekItem } from '../../../../Storage/Redux/LekSlice';
 import MainLoader from './Common/MainLoader';
@@ -13,20 +13,23 @@ const initalDataToPreventDataResultBeingNull = {
     isbn : "123",
     lekID : "5",
     nazivLeka : "Mg",
-    price : "111"
+    price : "111",
+    mainCategory : "main",
+    sideCategory : "side",
+    bestseller : "false"
 }
 function LekoviLista() {
     //const [lekovi, setLekovi] = useState<LekModel[]>([]);
     const dispatch = useDispatch();
-    const { data, isLoading } = useGetLekoviQuery(initalDataToPreventDataResultBeingNull);
+    const { data , isLoading } = useGetBestSellersQuery<any>(initalDataToPreventDataResultBeingNull);
     useEffect(() => {
         if (!isLoading) {
             if (data) {
                 dispatch(setLekItem(data.result))
             }
-
+            console.log(data);
         }
-    }, [isLoading])
+    }, [data, isLoading])
     // useEffect(() => {
     //     const timer = setTimeout(() => {
     //         if(!isLoading && data === undefined){
@@ -35,12 +38,12 @@ function LekoviLista() {
     //     }, 5000)
     // }, [isLoading, data])
 
-    if (isLoading || data.result === undefined || !data.isSuccess) {
+    if (isLoading) {
         return <MainLoader />
     }
     return (
-        <div className='container row'>
-            {data.isSuccess && 
+        <div className='container row md-2'>
+            {isLoading ? <MainLoader /> :
                 data.result.map((lek: LekModel, index: number) => (
                     <LekoviCard lek={lek} key={index} />
                 ))}

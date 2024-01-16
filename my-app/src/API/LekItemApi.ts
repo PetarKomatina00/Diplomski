@@ -23,6 +23,11 @@ const lekItemApi = createApi({
             }),
             //providesTags: ["Lek"]
         }),
+        getBestSellers : builder.query({
+            query : () => ({
+                url : "/Lek/GetBestSellers"
+            }),
+        }),
         updateLek : builder.mutation({
             query : ({data, id}) => ({
                 url : "Lek/" + id,
@@ -50,7 +55,8 @@ const lekItemApi = createApi({
 })
 export const {
     useGetLekoviQuery, 
-    useGetLekByIDQuery, 
+    useGetLekByIDQuery,
+    useGetBestSellersQuery, 
     useUpdateLekMutation,
     useAddLekMutation,
     useDeleteLekMutation} = lekItemApi
