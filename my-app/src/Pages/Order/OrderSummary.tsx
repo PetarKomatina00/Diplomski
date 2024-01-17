@@ -4,11 +4,9 @@ import LekModel from '../../interfaces/LekModel'
 import { cartItemModel } from '../../interfaces/cartItemModel'
 import lekItemApi from '../../API/LekItemApi'
 
-function OrderSummary({ data, userInput }: orderSummaryProps) {
-
-
-
+function OrderSummary({ data, userInput, LekIDAndTimesBought }: orderSummaryProps) {
     
+    console.log(LekIDAndTimesBought)
     return (
         <div>
             {""}

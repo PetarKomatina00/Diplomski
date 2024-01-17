@@ -12,5 +12,9 @@ export interface orderSummaryProps{
         name : string, 
         email : string,
         phoneNumber : string
-    }
+    },
+    LekIDAndTimesBought : [{
+        LekID : number,
+        Kolicina : number
+    }]
 }

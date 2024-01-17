@@ -36,6 +36,17 @@ const lekItemApi = createApi({
             }),
             invalidatesTags : ["Lek"]
         }),
+        updateTimesBought : builder.mutation({
+            query : ({data}) => ({
+                url : "Lek/UpdateTimesBought",
+                method : "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body : JSON.stringify(data)
+            }),
+            invalidatesTags : ["Lek"]
+        }),
         addLek : builder.mutation({
             query : (data) => ({
                 url : "Lek/Add",
@@ -58,6 +69,7 @@ export const {
     useGetLekByIDQuery,
     useGetBestSellersQuery, 
     useUpdateLekMutation,
+    useUpdateTimesBoughtMutation,
     useAddLekMutation,
     useDeleteLekMutation} = lekItemApi
 export default lekItemApi;

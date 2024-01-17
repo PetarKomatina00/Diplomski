@@ -2,7 +2,6 @@
 .label {
     position: relative;
     display:inline-block;
-    margin-left: 8px;
     margin-bottom: 0px;
     color: black;
     font-weight:bold;
@@ -21,7 +20,6 @@
     position: absolute;
     z-index: 1;
     bottom: 125%;
-    left: 50%;
     margin-left: -60px;
   }
   

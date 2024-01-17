@@ -8,26 +8,26 @@ import MainLoader from './Common/MainLoader';
 import { isNullOrUndefined } from 'util';
 
 const initalDataToPreventDataResultBeingNull = {
-    description : "123",
-    image : "asd",
-    isbn : "123",
-    lekID : "5",
-    nazivLeka : "Mg",
-    price : "111",
-    mainCategory : "main",
-    sideCategory : "side",
-    bestseller : "false"
+    description: "123",
+    image: "asd",
+    isbn: "123",
+    lekID: "5",
+    nazivLeka: "Mg",
+    price: "111",
+    mainCategory: "main",
+    sideCategory: "side",
+    bestseller: "false"
 }
 function LekoviLista() {
     //const [lekovi, setLekovi] = useState<LekModel[]>([]);
     const dispatch = useDispatch();
-    const { data , isLoading } = useGetBestSellersQuery<any>(initalDataToPreventDataResultBeingNull);
+    const { data, isLoading } = useGetLekoviQuery<any>(initalDataToPreventDataResultBeingNull);
     useEffect(() => {
         if (!isLoading) {
             if (data) {
                 dispatch(setLekItem(data.result))
             }
-            console.log(data);
+            //console.log(data);
         }
     }, [data, isLoading])
     // useEffect(() => {
@@ -47,6 +47,7 @@ function LekoviLista() {
                 data.result.map((lek: LekModel, index: number) => (
                     <LekoviCard lek={lek} key={index} />
                 ))}
+
         </div>
     )
 }

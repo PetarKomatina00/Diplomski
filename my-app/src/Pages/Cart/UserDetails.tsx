@@ -9,6 +9,11 @@ import { useInitialPaymentMutation } from "../../API/paymentApi";
 import { useNavigate } from "react-router-dom";
 import apiResponse from "../../interfaces/apiResponse";
 
+
+interface KeyValuePair {
+    LekID : number,
+    Kolicina : number
+}
 export default function UserDetails() {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false)
@@ -43,14 +48,29 @@ export default function UserDetails() {
             phoneNumber : ""
         })
     }, [userData])
+
+    let TimesBought : KeyValuePair = {
+        LekID : 0,
+        Kolicina : 0
+    }
+    let LekIDAndTimesBought : any = []
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
         const {data} : apiResponse = await initiatePayment(userData.id);
-        console.log("This is the data from UserDetails");
-        console.log(data);
+        // console.log("This is the data from UserDetails");
+        //console.log(data);
+        data?.result.cartItems.forEach((element : any) => {
+            //TimesBought.push(element.kolicina);
+            //console.log(element);
+            LekIDAndTimesBought.push({
+                LekID : element.lekID,
+                Kolicina : element.kolicina
+            })
+        });
+        console.log(LekIDAndTimesBought);
         navigate("/payment", {
-            state : {apiResult : data?.result, userInput}
+            state : {apiResult : data?.result, userInput, LekIDAndTimesBought}
         })
     }
     return (

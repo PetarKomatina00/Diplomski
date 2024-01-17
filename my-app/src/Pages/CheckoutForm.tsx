@@ -5,13 +5,15 @@ import { orderSummaryProps } from './Order/orderSummaryProps';
 import { cartItemModel } from '../interfaces/cartItemModel';
 import { useCreateOrderMutation } from '../API/orderApi';
 import apiResponse from '../interfaces/apiResponse';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useUpdateTimesBoughtMutation } from '../API/LekItemApi';
 
-const CheckoutForm = ({ data, userInput }: orderSummaryProps) => {
+const CheckoutForm = ({ data, userInput, LekIDAndTimesBought }: orderSummaryProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   const [createOrder] = useCreateOrderMutation();
+  const [updateTimesBought] = useUpdateTimesBoughtMutation();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -21,6 +23,7 @@ const CheckoutForm = ({ data, userInput }: orderSummaryProps) => {
     let grandTotal = 0;
     let totalItems = 0;
     const orderDetailsDTO: any = [];
+    console.log(data);
     data.cartItems.forEach((item: any) => {
       const tempOrderDetail: any = {};
       tempOrderDetail["lekID"] = item.lek?.lekID
@@ -54,6 +57,12 @@ const CheckoutForm = ({ data, userInput }: orderSummaryProps) => {
       orderDetailsDTO: orderDetailsDTO,
     })
     setIsProcessing(true);
+    let response2 : any = await updateTimesBought({ data: LekIDAndTimesBought })
+    console.log(response2);
+    if (response2.isSuccess) {
+      console.log("Uspesno updejtovano timesboughtid")
+    }
+
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
@@ -70,4 +79,4 @@ const CheckoutForm = ({ data, userInput }: orderSummaryProps) => {
     </form>
   );
 };
-export default CheckoutForm;
+export default CheckoutForm

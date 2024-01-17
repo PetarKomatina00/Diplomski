@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 const orderApi = createApi({
     reducerPath: "orderApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://diplomskiapi20231116043904.azurewebsites.net/api/",
+        baseUrl: "https://localhost:7194/api/",
         prepareHeaders: (headers: Headers, api) => {
             const token = localStorage.getItem("token")
             token && headers.append("Authorization", "Bearer " + token);

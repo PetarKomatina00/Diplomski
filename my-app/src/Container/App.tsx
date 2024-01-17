@@ -24,6 +24,7 @@ import OrderConfirmed from "../Pages/Order/orderConfirmed"
 import SviLekovi from '../Pages/Lekovi/SviLekovi';
 import Upsert from '../Pages/Lekovi/Upsert';
 import Obrisi from '../Pages/Lekovi/Obrisi';
+import LekoviLista from '../Components/Layout/Page/Lekovi/LekoviLista';
 
 function App() {
   const dispatch = useDispatch();
@@ -63,6 +64,7 @@ function App() {
           <Route path = '/Lekovi/Upsert/' element = {<Upsert/>}/>
           <Route path = '/Lekovi/Obrisi/:id' element = {<Obrisi/>}/>
           <Route path = '/accessDenied' element = {<AccessDenied/>}/>
+          <Route path = '/LekoviLista' element = {<LekoviLista/>}/>
           <Route path='*' element={<NotFound />} />
         </Routes>
       </div>

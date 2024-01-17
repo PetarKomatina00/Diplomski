@@ -4,7 +4,7 @@ export default interface apiResponse {
         isSuccess? : boolean;
         errorMessage? : Array<string>;
         result : {
-            [key : string] : string
+            [key : string] : any
         }
     };
     error? : any
