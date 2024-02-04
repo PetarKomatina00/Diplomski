@@ -49,3 +49,13 @@
 .hey{
   background-color: #bf1f1f;
 }
+.search-bar {
+  min-width: 200px;
+  margin-top: 10px;
+  align-items: center;
+}
+.search-bar-container {
+  display: flex;
+  min-width: 200px;
+  margin-bottom: 20px;
+}

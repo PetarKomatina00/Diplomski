@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 import { setLekItem } from '../../../../Storage/Redux/LekSlice';
 import MainLoader from './Common/MainLoader';
 import { isNullOrUndefined } from 'util';
+import "./LekoviLista.css"
+import Filter from './Filter';
 
 const initalDataToPreventDataResultBeingNull = {
     description: "123",
@@ -21,7 +23,7 @@ const initalDataToPreventDataResultBeingNull = {
 function LekoviLista() {
     //const [lekovi, setLekovi] = useState<LekModel[]>([]);
     const dispatch = useDispatch();
-    const { data, isLoading } = useGetLekoviQuery<any>(initalDataToPreventDataResultBeingNull);
+    const { data, isLoading } = useGetLekoviQuery<any>([1, 2]);
     useEffect(() => {
         if (!isLoading) {
             if (data) {
@@ -42,12 +44,12 @@ function LekoviLista() {
         return <MainLoader />
     }
     return (
-        <div className='container row md-2'>
-            {isLoading ? <MainLoader /> :
+        <div className='container row md-2 mx-auto justify-content-center'>
+            <Filter/>
+            {/* {isLoading ? <MainLoader /> :
                 data.result.map((lek: LekModel, index: number) => (
                     <LekoviCard lek={lek} key={index} />
-                ))}
-
+                ))} */}
         </div>
     )
 }

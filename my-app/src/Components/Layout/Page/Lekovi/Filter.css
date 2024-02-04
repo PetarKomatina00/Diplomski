@@ -1,0 +1,56 @@
+/* Filter.css */
+#filteredProducts {
+    /* Ensure the filter bar is full width if needed */
+    width: 100%;
+}
+
+/* Custom styles for the input group */
+.input-group .form-control {
+    border-radius: 0.25rem;
+}
+
+.input-group .btn {
+    border-radius: 0.25rem;
+}
+
+/* Align items vertically */
+.form-check {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem; /* Spacing after the search input */
+}
+
+/* Custom checkbox */
+.form-check-input {
+    cursor: pointer;
+}
+
+/* Label styling */
+.form-check-label {
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+
+/* Dropdown button custom styling */
+.dropdown .btn {
+    border-radius: 0.25rem;
+    margin-right: 0.5rem; /* Spacing between the sort and show dropdowns */
+}
+
+/* Dropdown menu item custom styling */
+.dropdown-item {
+    cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #filteredProducts {
+        flex-direction: column;
+    }
+
+    .form-check,
+    .dropdown {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}

@@ -12,8 +12,8 @@ const lekItemApi = createApi({
     tagTypes: ["Lek"],
     endpoints: (builder) => ({
         getLekovi: builder.query({
-            query: () => ({
-                url: "Lek"
+            query: ([searchString = "", currentPage = 1, size = 2]) => ({
+                url: "Lek/" + currentPage + "/" + size
             }),
             providesTags: ["Lek"]
         }),

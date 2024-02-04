@@ -58,7 +58,9 @@ function Header() {
                                     Admin panel
                                 </a>
                                 <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item" onClick={() => navigate("Lekovi/SviLekovi")}>Svi Lekovi</a></li>
+                                    <li>
+                                        <a className="dropdown-item" onClick={() => navigate("Lekovi/SviLekovi")}>Svi Lekovi</a>
+                                    </li>
                                 </ul>
                             </li>}
 
