@@ -30,7 +30,7 @@ function App() {
   const dispatch = useDispatch();
   const [skip, setSkip] = useState(true);
   const userData : userModel = useSelector((state : RootState) => state.userAuthStore);
-  const { data, isLoading } = useGetShoppingCartQuery(userData.id)
+  const { data, isLoading } = useGetShoppingCartQuery(userData.id, {skip : skip})
   useEffect(() => {
     const localToken = localStorage.getItem("token")
     if(localToken){
@@ -38,11 +38,17 @@ function App() {
       dispatch(setLoggedInUser({fullName, id, email, role}))
     }
   }, [])
+  console.log(data);
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && data !== undefined) {
+      
       dispatch(setShoppingCart(data.result?.cartItems))
     }
   }, [data])
+
+  useEffect(() => {
+    if(userData.id) setSkip(false) 
+  }, [userData])
   return (
     <div>
       <Header />

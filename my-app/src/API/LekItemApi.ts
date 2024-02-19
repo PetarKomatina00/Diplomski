@@ -1,9 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-
 const lekItemApi = createApi({
     reducerPath: "lekItemApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://localhost:7194/api/",
+        baseUrl: "https://diplomskiapi.azurewebsites.net/api/",
         prepareHeaders: (headers: Headers, api) => {
             const token = localStorage.getItem("token")
             token && headers.append("Authorization", "Bearer " + token);
@@ -12,9 +11,20 @@ const lekItemApi = createApi({
     tagTypes: ["Lek"],
     endpoints: (builder) => ({
         getLekovi: builder.query({
-            query: ([searchString = "", currentPage = 1, size = 2]) => ({
-                url: "Lek/" + currentPage + "/" + size
+            query: ({currentPage, pageSize, bestSellers}) => ({
+                url: "Lek/",
+                params : {
+                    ...(currentPage && {currentPage}),
+                    ...(pageSize && {pageSize}),
+                    ...(bestSellers && {bestSellers})
+                },
             }),
+            transformResponse(apiResponse : {result : any}, meta : any){
+                return {
+                    apiResponse,
+                    totalRecords : meta.response.headers.get("X-Pagination")
+                }
+            },
             providesTags: ["Lek"]
         }),
         getLekByID: builder.query({

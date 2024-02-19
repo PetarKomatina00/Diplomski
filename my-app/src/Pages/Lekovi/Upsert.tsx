@@ -10,6 +10,8 @@ const lekInitialData = {
     description: "",
     isbn: "",
     price: "",
+    category : "",
+    bestSellers : "",
 }
 function Upsert() {
     const [imageToBeStore, setImageToBeStore] = useState<any>();
@@ -24,11 +26,14 @@ function Upsert() {
     const {data} = useGetLekByIDQuery(id);
     useEffect(() => {
         if(data && data.result){
+            console.log(data.result);
             const tempData = {
                 name: data.result.nazivLeka,
                 description: data.result.description,
                 isbn: data.result.isbn,
                 price: data.result.price,
+                category : data.result.mainCategory,
+                bestSellers : data.result.bestSeller
             };
             setLekInput(tempData);
             setImageToBeDisplayed(data.result.image);
@@ -80,6 +85,8 @@ function Upsert() {
         formData.append("Description", LekInput.description)
         formData.append("ISBN", LekInput.isbn)
         formData.append("Price", LekInput.price)
+        formData.append("mainCategory", LekInput.category)
+        formData.append("bestSeller", LekInput.bestSellers)
         if(imageToBeDisplayed) formData.append("Image", imageToBeStore)
         // for(let x of formData.values())
         //     console.log(x)
@@ -152,6 +159,19 @@ function Upsert() {
                             value={LekInput.price}
                             onChange={handleLekInput}
                         />
+                        <input
+                            type="text"
+                            className='form-control mt-3'
+                            placeholder='Enter Category'
+                            required
+                            name="price"
+                            value={LekInput.category}
+                            onChange={handleLekInput}
+                        />
+                        <select className='form-control mt-3'>
+                            <option>False</option>
+                            <option>True</option>
+                        </select>
                         <input type="file" className='form-control mt-3' onChange={handleFileChange} />
                         <div className='row'>
                             <div className='col-6'>

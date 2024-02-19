@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import './SlidingMenu.css'
-
-import { ArrowBigLeft, ArrowBigRight, Circle, CircleDot } from 'lucide-react'
+import { ArrowBigLeft, ArrowBigRight, Circle, CircleDot, HeadingIcon } from 'lucide-react'
 import MenuContainer from './MenuContainer'
+import { current } from '@reduxjs/toolkit'
+import "./SlidingMenu.css"
+import 'bootstrap/dist/css/bootstrap.min.css'
 type ImageSliderProps = {
     images: string[]
 }
@@ -22,39 +24,68 @@ function Slider({ images }: ImageSliderProps) {
         return () => clearTimeout(timer);
     }, [currentImageIndex])
 
-    const getActiveIndexFromMenuContainer = (index : number) => {
+    const getActiveIndexFromMenuContainer = (index: number) => {
         setCurrentImageIndex(index - 1);
     }
+
     return (
-        <div className='slider'>
-            <div className='image-preview' style={{ position: "relative" }}>
-                <img src={images[currentImageIndex]}
-                    alt="Neka slika"
-                ></img>
-                <button className='image-slider-btn' style={{ left: 0 }} onClick={prevImage}><ArrowBigLeft /></button>
-                <button className='image-slider-btn' style={{ right: 0 }} onClick={nextImage}><ArrowBigRight /></button>
-            </div>
-            {/* <div style={{
-                position: "absolute",
-                top : "18.5rem",
-                display : "flex",
-                gap : ".5rem"
-            }}>
-                {images.map((_, index) => (
-                    <button onClick={() => setCurrentImageIndex(index)} className='img-slider-dot-btn'>{index === currentImageIndex ? <CircleDot/> : <Circle/>}</button>
+        // <div className=''>
+        //     <div className='slider'>
+        //         <div className='image-preview' style={{ position: "relative" }}>
+        //             <img src={images[currentImageIndex]} alt="Neka slika"></img>
+        //             {/* <button className='image-slider-btn' style={{ left: 0 }} onClick={prevImage}><ArrowBigLeft /></button>
+        //             <button className='image-slider-btn' style={{ right: 0 }} onClick={nextImage}><ArrowBigRight /></button> */}
+        //         </div>
+        //         <MenuContainer getActiveIndex={getActiveIndexFromMenuContainer} />
+        //         <div className='image-list' style={{ overflow: "hidden"}}>
+        //             {
+        //                 images.map((image: any, index: any) => (
+        //                     <div className='img'
+        //                         key={index}
+        //                     >
+        //                     </div>
+        //                 ))
+        //             }
+        //         </div>
+        //     </div>
+        // </div>
+
+
+        // <div className="slider">
+        //     <div className="slides">
+        //         {
+        //             images.map((image: any, index: any) => (
+        //                 <div className='slide' key={index} style={{ display: index === currentImageIndex ? 'block' : "" }}>
+        //                     <img src={image}></img>
+        //                 </div>
+        //             ))
+        //         }
+        //     </div>
+        //     <div className='button-slider'>
+        //         <button className="prev" onClick={prevImage}>❮</button>
+        //         <button className="next" onClick={nextImage}>❯</button>
+        //     </div>
+
+        //     <MenuContainer getActiveIndex={getActiveIndexFromMenuContainer} />
+        // </div>
+
+        <div id="carouselExampleSlidesOnly" className="carousel-slide" data-bs-ride="carousel">
+            <div className="carousel-indicators">
+                {images.map((image: any, idx: number) => (
+                    <button key={idx} type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to={idx}
+                        className={idx === currentImageIndex ? 'active' : ''}
+                        aria-current={idx === currentImageIndex ? 'true' : 'false'}
+                        aria-label={`Slide ${idx + 1}`}></button>
                 ))}
-            </div> */}
-            <MenuContainer getActiveIndex = {getActiveIndexFromMenuContainer}/>
-            <div className='image-list' style={{ overflow: "hidden" }}>
-                {
-                    images.map((image: any, index: any) => (
-                        <div
-                            key={index}
-                        >
-                        </div>
-                    ))
-                }
             </div>
+            <div className="carousel-inner">
+                {images.map((image: any, idx: number) => (
+                    <div key={idx} className={`carousel-item ${idx === currentImageIndex ? 'active' : ''}`}>
+                        <img src={image} className="d-block w-100" alt={`Slide ${idx}`} />
+                    </div>
+                ))}
+            </div>
+            <MenuContainer getActiveIndex={getActiveIndexFromMenuContainer} images = {images} />
         </div>
     )
 }

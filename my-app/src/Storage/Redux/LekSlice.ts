@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initalState = {
     lekItem: [],
+    search : "",
 };
 
 export const LekSlice = createSlice({
@@ -11,7 +12,10 @@ export const LekSlice = createSlice({
         setLekItem : (state, action) => {
             state.lekItem = action.payload;
         },
+        setSearchItem : (state, action) => {
+            state.search = action.payload;
+        },
     },
 });
-export const { setLekItem } = LekSlice.actions;
+export const { setLekItem, setSearchItem } = LekSlice.actions;
 export const lekItemReducer = LekSlice.reducer;

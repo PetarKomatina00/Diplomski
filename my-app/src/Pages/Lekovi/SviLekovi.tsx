@@ -37,8 +37,9 @@ const SviLekovi = () => {
     }
     return (
         <>
+        
             {isLoading && <MainLoader />} 
-            {!isLoading && (
+            {!isLoading && data && data.apiResponse.result && (
                 <div className='table p-5'>
                     <div className='d-flex align-items-center justify-content-between'>
                         <h1 className='text-success'>Lekovi Lista</h1>
@@ -55,7 +56,7 @@ const SviLekovi = () => {
                             <div className='col-2'>Action</div>
                         </div>
                         
-                        {data.result.map((lek: LekModel) => {
+                        {data && data.apiResponse.result && data.apiResponse.result.map((lek: LekModel) => {
                             return (
                                 <div className='row border' key = {lek.lekID}>
                                     <div className='col-2'>
@@ -84,7 +85,6 @@ const SviLekovi = () => {
                                 </div>
                             )
                         })}
-                        {console.log(data.result)}
                     </div>
                 </div>
             )}

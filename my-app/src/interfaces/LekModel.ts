@@ -5,4 +5,6 @@ export default interface LekModel {
     isbn: string;
     image: string;
     price: number;
+    mainCategory : string,
+    bestSeller : boolean
   }

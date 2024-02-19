@@ -13,3 +13,17 @@
 .menu-block:hover{
     background-color: #eaeaea;
 }
+.navbar .nav-item{
+    border: 2px solid #d7dcd4; /* Bright blue border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 5px 15px;
+    margin-right: 10px;
+    transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
+    color: #007bff; /* Text color matches the border */
+    text-decoration: none; /* Removes underline from links */
+}
+.navbar .nav-item:hover, .navbar .nav-item:active {
+    background-color: #d3bce2; /* Change background on hover/active */
+    color: #fff; /* Change text color on hover/active */
+    border-color: #0056b3; /* Darker border color on hover/active */
+  }

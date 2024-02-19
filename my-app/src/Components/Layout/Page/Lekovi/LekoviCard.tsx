@@ -34,81 +34,86 @@ function LekoviCard(props: Props) {
         setIsAddingToCart(false);
     }
     return (
-
-
-            <div className='col-2 p-2 ' style={{ backgroundColor: "#F5F5F5" }}>
-                <div className='card '
-                    style={{ boxShadow: "0 1px 7px 0 rgb(0 0 0 / 50%)" }}>
-                    <div className='card-body pt-2'>
-                        <div className='row col-10 offset-1 p-4 container'>
-                            <Link to={`/LekDetails/${props.lek.lekID}`}>
-                                <img
-                                    src={props.lek.image}
-                                    style={{ borderRadius: "50%" }}
-                                    className='w-100 mt-5 image box'
-                                ></img>
-                            </Link>
-                        </div>
-                        {/** Dodati specialtag za lek */}
-                        {/* <i className="bi bi-star btn btn-success"
-                        style=
-                        {{
-                            position: "absolute",
-                            top: "15px",
-                            left: "15px",
-                            padding: "5px 10px",
-                            borderRadius: "3px",
-                            outline: "none !important",
-                            cursor: "pointer"
-                        }}
-                    >
-                        &nbsp; SPECIAL
-                    </i> */}
-
-                        {isAddingToCart ?
-                            (<>
-                                <div style={{
-                                    position: 'absolute',
-                                    top: '15px',
-                                    right: '15px'
-                                }}>
-                                    <MiniLoader />
-                                </div>
-                            </>)
-                            : (<i className='bi bi-cart-plus btn btn-outline-danger myIcon'
-                                style={{
-                                    position: "absolute",
-                                    top: "15px",
-                                    right: "15px",
-                                    padding: "5px 10px",
-                                    borderRadius: "3px",
-                                    outline: "none !important",
-                                    cursor: "pointer"
-                                }}
-                                onClick={() => handleAddToCart(props.lek.lekID)}
-                            ></i>)}
-
-                        <div className='text-center'>
-                            <p className='card-title m-0 text-success fs-3'>
-                                <Link to={`/LekDetails/${props.lek.lekID}`}
-                                    style={{ textDecoration: "none", color: "green" }}>
-                                    {props.lek.nazivLeka}
+        // <div className='container'>
+        //     <div className='row'>
+        //         <div className='col-sm-12 col-md-6 col-lg-4'>
+        //             <div className='card'>
+        //                 <div className='card-body'>
+        //                     <h5 className='card-title'>{props.lek.nazivLeka}</h5>
+        //                     <p className="card-text">{props.lek.description}</p>
+        //                 </div>  
+        //             </div>
+        //         </div>
+        //     </div>
+        // </div>
+        < div className='' >
+            <div className=''>
+                <div className='col-md-4 col-12 p-4' style={{ backgroundColor: "#F5F5F5" }}>
+                    <div className='card'
+                        style={{ boxShadow: "0 1px 7px 0 rgb(0 0 0 / 50%)" }}>
+                        <div className='card-body pt-2'>
+                            <div className='row col-10 offset-1 p-4 container'>
+                                <Link to={`/LekDetails/${props.lek.lekID}`}>
+                                    <img
+                                        src={props.lek.image}
+                                        style={{ borderRadius: "50%" }}
+                                        className='w-100 mt-5 image-box media'
+                                    ></img>
                                 </Link>
+                            </div>
+                            {isAddingToCart ?
+                                (<>
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: '15px',
+                                        right: '15px'
+                                    }}>
+                                        <MiniLoader />
+                                    </div>
+                                </>)
+                                : (<i className='bi bi-cart-plus btn btn-outline-danger myIcon'
+                                    style={{
+                                        position: "absolute",
+                                        top: "15px",
+                                        right: "15px",
+                                        padding: "5px 10px",
+                                        borderRadius: "3px",
+                                        outline: "none !important",
+                                        cursor: "pointer"
+                                    }}
+                                    onClick={() => handleAddToCart(props.lek.lekID)}
+                                ></i>)}
 
-                            </p>
-                            {/* <p className='badge bg-secondary' style={{ fontSize: "12px" }}>
-                            category
-                        </p> */}
+                            <div className='text-center'>
+                                <p className='card-title m-0 text-success fs-3'>
+                                    <Link to={`/LekDetails/${props.lek.lekID}`}
+                                        style={{ textDecoration: "none", color: "green" }}>
+                                        {props.lek.nazivLeka}
+                                    </Link>
+
+                                </p>
+                            </div>
+                            <p className='card-text' style={{ textAlign: "center" }}>{props.lek.description}</p>
+                            <div className='row text-center'>
+                                <h4>${props.lek.price}</h4>
+                            </div>
                         </div>
-                        <p className='card-text' style={{ textAlign: "center" }}>{props.lek.description}</p>
-                        <div className='row text-center'>
-                            <h4>${props.lek.price}</h4>
-                        </div>
-
-
                     </div>
                 </div>
             </div>
+
+        </div >
+        // <div className="row">
+        //         <div className="col-md-4 mb-4" key={props.lek.lekID}>
+        //             <div className="card">
+        //                 <div className="card-body">
+        //                     <h5 className="card-title">{props.lek.nazivLeka}</h5>
+        //                     <p className="card-text">ID: {props.lek.description}</p>
+        //                     {/* You can add more fields as needed */}
+        //                 </div>
+        //             </div>
+        //         </div>
+        // </div>
     );
 }
 

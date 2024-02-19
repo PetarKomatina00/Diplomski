@@ -5,6 +5,7 @@ import { setLekItem } from '../../../../Storage/Redux/LekSlice';
 import MainLoader from '../Lekovi/Common/MainLoader';
 import LekModel from '../../../../interfaces/LekModel';
 import LekoviCard from '../Lekovi/LekoviCard';
+import BestSellerLabel from './BestSellerLabel';
 
 const initalDataToPreventDataResultBeingNull = {
   description: "123",
@@ -33,11 +34,18 @@ function BestSellers() {
     return <MainLoader />
   }
   return (
-    <div className='container row md-2'>
-      {isLoading ? <MainLoader /> :
-        data.result.map((lek: LekModel, index: number) => (
-          <LekoviCard lek={lek} key={index} />
-        ))}
+    <div className='container md-2'>
+      <div className='row'>
+        <div className=''>
+          <BestSellerLabel />
+        </div>
+        <div className='col'>
+          {isLoading ? <MainLoader /> :
+            data.result.map((lek: LekModel, index: number) => (
+              <LekoviCard lek={lek} key={index} />
+            ))}
+        </div>
+      </div>
 
     </div>
   )

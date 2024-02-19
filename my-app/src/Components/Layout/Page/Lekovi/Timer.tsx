@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import "./Timer.css"
+import "./ShopNow.css"
+import { useNavigate } from 'react-router-dom';
 const Timer = () => {
     // Initialize state
+    const navigate = useNavigate();
+    const navigateFunction = () => {
+        navigate("/LekoviLista");
+    }
     const [timeLeft, setTimeLeft] = useState({
         hours: '05',
         minutes: '37',
@@ -37,19 +43,23 @@ const Timer = () => {
         return () => clearInterval(interval);
     }, []);
     return (
-        <div className="countdown-container">
-            <div>Ends in:</div>
-            <div className="time-segment">
-                <p>{timeLeft.hours}</p>
-                <label>H</label>
+        <div className='container'>
+            <div className='row' style={{ marginLeft: "auto", marginRight: "auto", width: "60%" }}>
+                <div className='col time-segment mt-1' >
+                    <p >{timeLeft.hours}</p>
+                    <label>H</label>
+                </div>
+                <div className="col time-segment mt-1">
+                    <p>{timeLeft.minutes}</p>
+                    <label>M</label>
+                </div>
+                <div className="col time-segment mt-1">
+                    <p>{timeLeft.seconds}</p>
+                    <label>S</label>
+                </div>
             </div>
-            <div className="time-segment">
-                <p>{timeLeft.minutes}</p>
-                <label>M</label>
-            </div>
-            <div className="time-segment">
-                <p>{timeLeft.seconds}</p>
-                <label>S</label>
+            <div className=''>
+                <button onClick = {navigateFunction} className='btn btn-warning mb-4 mt-2 media'>Shop Now</button>
             </div>
         </div>
     );
