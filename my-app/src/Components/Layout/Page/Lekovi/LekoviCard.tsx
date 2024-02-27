@@ -46,9 +46,7 @@ function LekoviCard(props: Props) {
         //         </div>
         //     </div>
         // </div>
-        < div className='' >
-            <div className=''>
-                <div className='col-md-4 col-12 p-4' style={{ backgroundColor: "#F5F5F5" }}>
+                <div className='col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl p-4' style={{ backgroundColor: "#F5F5F5" }}>
                     <div className='card'
                         style={{ boxShadow: "0 1px 7px 0 rgb(0 0 0 / 50%)" }}>
                         <div className='card-body pt-2'>
@@ -61,6 +59,22 @@ function LekoviCard(props: Props) {
                                     ></img>
                                 </Link>
                             </div>
+                            {props.lek.bestSeller && props.lek.bestSeller === true && (
+                                <i
+                                className='bi bi-star btn btn-success'
+                                style = {{
+                                    position : "absolute",
+                                    top : "15px",
+                                    left : "15px",
+                                    padding : "5px 10px",
+                                    borderRadius : "3px",
+                                    outline : "none, !important",
+                                    cursor : "pointer"
+                                }}
+                                >
+                                    &nbsp; {"BestSeller"}
+                                </i>
+                            )}
                             {isAddingToCart ?
                                 (<>
                                     <div style={{
@@ -100,9 +114,6 @@ function LekoviCard(props: Props) {
                         </div>
                     </div>
                 </div>
-            </div>
-
-        </div >
         // <div className="row">
         //         <div className="col-md-4 mb-4" key={props.lek.lekID}>
         //             <div className="card">

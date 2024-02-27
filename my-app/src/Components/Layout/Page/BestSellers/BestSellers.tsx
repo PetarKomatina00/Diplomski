@@ -16,7 +16,8 @@ const initalDataToPreventDataResultBeingNull = {
   price: "111",
   mainCategory: "main",
   sideCategory: "side",
-  bestseller: "false"
+  bestseller: "false",
+  timesBought: 0
 }
 function BestSellers() {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function BestSellers() {
   useEffect(() => {
     if (!isLoading) {
       if (data) {
+        console.log(data);
         dispatch(setLekItem(data.result))
       }
       //console.log(data);
@@ -34,16 +36,19 @@ function BestSellers() {
     return <MainLoader />
   }
   return (
-    <div className='container md-2'>
-      <div className='row'>
+    <div className=' md-2'>
+      <div className=''>
         <div className=''>
           <BestSellerLabel />
         </div>
-        <div className='col'>
-          {isLoading ? <MainLoader /> :
-            data.result.map((lek: LekModel, index: number) => (
-              <LekoviCard lek={lek} key={index} />
-            ))}
+        <div className='container d-flex'>
+          <div className='row '>
+            {isLoading ? <MainLoader /> :
+              data.result.map((lek: LekModel, index: number) => (
+                <LekoviCard lek={lek} key={index} />
+              ))}
+          </div>
+
         </div>
       </div>
 

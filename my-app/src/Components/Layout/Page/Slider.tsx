@@ -6,11 +6,16 @@ import MenuContainer from './MenuContainer'
 import { current } from '@reduxjs/toolkit'
 import "./SlidingMenu.css"
 import 'bootstrap/dist/css/bootstrap.min.css'
+import MainLoader from './Lekovi/Common/MainLoader'
 type ImageSliderProps = {
     images: string[]
 }
-function Slider({ images }: ImageSliderProps) {
+
+
+const Slider = ({ images }: ImageSliderProps) => {
+    //console.log(images);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const imageURL: any = []
     const nextImage = () => {
         setCurrentImageIndex((prev) => (prev + 1) % images.length)
     }
@@ -26,6 +31,12 @@ function Slider({ images }: ImageSliderProps) {
 
     const getActiveIndexFromMenuContainer = (index: number) => {
         setCurrentImageIndex(index - 1);
+    }
+
+    const fja = () => {
+        images.map((image : any) => {
+           //console.log(extractFileName(image))
+        })
     }
 
     return (
@@ -68,25 +79,31 @@ function Slider({ images }: ImageSliderProps) {
 
         //     <MenuContainer getActiveIndex={getActiveIndexFromMenuContainer} />
         // </div>
+        <>
+            {(
+                <div id="carouselExampleSlidesOnly" className="carousel-slide" data-bs-ride="carousel">
+                    <button className='btn btn-warning' onClick={fja}>CLICK</button>
+                    <div className="carousel-indicators">
+                        {images.map((image: any, idx: number) => (
+                            <button key={idx} type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to={idx}
+                                className={idx === currentImageIndex ? 'active' : ''}
+                                aria-current={idx === currentImageIndex ? 'true' : 'false'}
+                                aria-label={`Slide ${idx + 1}`}></button>
+                        ))}
 
-        <div id="carouselExampleSlidesOnly" className="carousel-slide" data-bs-ride="carousel">
-            <div className="carousel-indicators">
-                {images.map((image: any, idx: number) => (
-                    <button key={idx} type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to={idx}
-                        className={idx === currentImageIndex ? 'active' : ''}
-                        aria-current={idx === currentImageIndex ? 'true' : 'false'}
-                        aria-label={`Slide ${idx + 1}`}></button>
-                ))}
-            </div>
-            <div className="carousel-inner">
-                {images.map((image: any, idx: number) => (
-                    <div key={idx} className={`carousel-item ${idx === currentImageIndex ? 'active' : ''}`}>
-                        <img src={image} className="d-block w-100" alt={`Slide ${idx}`} />
                     </div>
-                ))}
-            </div>
-            <MenuContainer getActiveIndex={getActiveIndexFromMenuContainer} images = {images} />
-        </div>
+                    <div className="carousel-inner">
+                        {images.map((image: any, idx: number) => (
+                            <div key={idx} className={`carousel-item ${idx === currentImageIndex ? 'active' : ''}`}>
+                                <img src={image} className="d-block w-100" alt={`Slide ${idx}`} />
+                            </div>
+                        ))}
+                    </div>
+                    <MenuContainer getActiveIndex={getActiveIndexFromMenuContainer} images={images} />
+                </div>
+            )}
+        </>
+
     )
 }
 

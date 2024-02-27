@@ -63,7 +63,7 @@ const lekItemApi = createApi({
                 method : "POST",
                 body : data,
             }),
-            //invalidatesTags : ["Lek"]
+            invalidatesTags : ["Lek"]
         }),
         deleteLek : builder.mutation({
             query : (id) => ({

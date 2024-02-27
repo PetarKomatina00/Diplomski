@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './MenuContainer.css'
+
 const MenuContainer = ({ getActiveIndex, images }: any, ) => {
     const [activeIndex, setActiveIndex] = useState(-1);
     const [getImage, setGetImage] = useState("");
@@ -15,6 +16,7 @@ const MenuContainer = ({ getActiveIndex, images }: any, ) => {
         const temp = imageParts[i]
         imageNameWithExtension[i] = temp[imageParts[i].length - 1]
         fileNames[i] = imageNameWithExtension[i].split('.')[0]
+        fileNames[i] = decodeURIComponent(fileNames[i])
     }
     //console.log(fileNames)
     // const imageParts = images.split('/')

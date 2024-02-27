@@ -1,17 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import InputHelper from '../../Helper/InputHelper';
 import toastNotify from '../../Helper/toastNotify';
-import { useAddLekMutation, useGetLekByIDQuery, useUpdateLekMutation } from '../../API/LekItemApi';
+import { useAddLekMutation, useGetLekByIDQuery, useGetLekoviQuery, useUpdateLekMutation } from '../../API/LekItemApi';
 import apiResponse from '../../interfaces/apiResponse';
 import { useNavigate, useParams } from 'react-router-dom';
 
+type ApiResponse = {
+    data: {
+        errorMessages: string[];
+        isSuccess: boolean;
+        result: {
+            bestSeller: boolean;
+            description: string;
+            image: string;
+            isbn: string;
+            lekID: number;
+            mainCategory: string;
+            nazivLeka: string;
+            price: number;
+            timesBought: number;
+        };
+        statusCode: number;
+    };
+};
 const lekInitialData = {
     name: "",
     description: "",
     isbn: "",
     price: "",
-    category : "",
-    bestSellers : "",
+    category: "",
+    bestSellers: false,
+    timesBought: 0
 }
 function Upsert() {
     const [imageToBeStore, setImageToBeStore] = useState<any>();
@@ -21,19 +40,19 @@ function Upsert() {
     const [addLek] = useAddLekMutation();
     const navigate = useNavigate();
     const [updateLek] = useUpdateLekMutation();
-
-    const {id} = useParams();
-    const {data} = useGetLekByIDQuery(id);
+    const { id } = useParams();
+    const { data } = useGetLekByIDQuery(id);
     useEffect(() => {
-        if(data && data.result){
+        if (data && data.result) {
             console.log(data.result);
             const tempData = {
                 name: data.result.nazivLeka,
                 description: data.result.description,
                 isbn: data.result.isbn,
                 price: data.result.price,
-                category : data.result.mainCategory,
-                bestSellers : data.result.bestSeller
+                category: data.result.mainCategory,
+                bestSellers: data.result.bestSeller,
+                timesBought: data.result.timesBought
             };
             setLekInput(tempData);
             setImageToBeDisplayed(data.result.image);
@@ -51,7 +70,7 @@ function Upsert() {
             const imageType = file.type.split("/")[1];
             const validImageTypes = ["jpeg", "jpg", "png"];
             const isImageTypeValid = validImageTypes.filter((e) => {
-                return e === imageType;   
+                return e === imageType;
             })
             if (file.size > 1000 * 1024) {
                 setImageToBeStore("");
@@ -80,40 +99,51 @@ function Upsert() {
             setIsLoading(false);
             return;
         }
+        console.log("this is " + LekInput.bestSellers)
         const formData = new FormData();
-        formData.append("NazivLeka", LekInput.name)
-        formData.append("Description", LekInput.description)
-        formData.append("ISBN", LekInput.isbn)
-        formData.append("Price", LekInput.price)
+        formData.append("nazivLeka", LekInput.name)
+        formData.append("description", LekInput.description)
+        formData.append("isbn", LekInput.isbn)
+        formData.append("price", LekInput.price)
         formData.append("mainCategory", LekInput.category)
-        formData.append("bestSeller", LekInput.bestSellers)
-        if(imageToBeDisplayed) formData.append("Image", imageToBeStore)
-        // for(let x of formData.values())
-        //     console.log(x)
-        let response;
-        if(id){
-            formData.append("LekID", id);
-            response = await updateLek({data : formData, id});
-            if(response)
+        formData.append("bestSeller", (LekInput.bestSellers).toString())
+        formData.append("timesBought", "0")
+        if (imageToBeDisplayed) formData.append("image", imageToBeStore)
+        for (let x of formData.values())
+            console.log(x)
+        let response : apiResponse;
+        if (id) {
+            formData.append("lekID", id);
+            response = await updateLek({ data: formData, id });
+            
+            if (response.data?.isSuccess) {
+                console.log(response);
                 toastNotify("Lek je uspesno izmenjen", "success");
-            else{
+            }
+            else {
                 toastNotify("Greska", "error")
             }
         }
-        else{
+        else {
             response = await addLek(formData);
-            if(response){
+            console.log(response);
+            console.log(response.data?.isSuccess)
+            if (response.data?.isSuccess) {
                 toastNotify("Lek je uspesno napravljen", "success");
             }
-            else{
-                toastNotify("Lek je nije napravljen", "success");
+            else {
+                toastNotify("Lek nije napravljen", "error");
             }
         }
-        if (response) {
+        if (response.data?.isSuccess) {
             setIsLoading(false);
             window.location.replace("/Lekovi/SviLekovi")
         }
         setIsLoading(false);
+    }
+    const handleSelectedValue = (event: any) => {
+        console.log(event.target.value)
+        LekInput.bestSellers = event.target.value
     }
     return (
         <div className='container border mt-5 p-5'>
@@ -164,26 +194,35 @@ function Upsert() {
                             className='form-control mt-3'
                             placeholder='Enter Category'
                             required
-                            name="price"
+                            name="category"
                             value={LekInput.category}
                             onChange={handleLekInput}
                         />
-                        <select className='form-control mt-3'>
-                            <option>False</option>
-                            <option>True</option>
+                        <input
+                            type="text"
+                            className='form-control mt-3'
+                            placeholder='Enter Times Bought'
+                            required
+                            name="timesBought"
+                            value={LekInput.timesBought}
+                            onChange={handleLekInput}
+                        />
+                        <select className='form-control mt-3'  onChange={handleSelectedValue}>
+                            <option value="false" >False</option>
+                            <option value="true" >True</option>
                         </select>
                         <input type="file" className='form-control mt-3' onChange={handleFileChange} />
                         <div className='row'>
                             <div className='col-6'>
-                            <button
-                                type='submit'
-                                className='btn btn-success form-control mt-3'>
+                                <button
+                                    type='submit'
+                                    className='btn btn-success form-control mt-3'>
                                     {id ? "Izmeni" : "Dodaj"}
                                 </button>
                             </div>
                             <div className='col-6'>
                                 <a onClick={() => navigate(-1)}
-                                className='btn btn-secondary form-control mt-3'>Nazad</a>
+                                    className='btn btn-secondary form-control mt-3'>Nazad</a>
                             </div>
                         </div>
                     </div>

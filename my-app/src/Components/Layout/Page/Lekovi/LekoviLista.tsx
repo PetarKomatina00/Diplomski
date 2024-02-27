@@ -40,8 +40,6 @@ function LekoviLista() {
     //
 
     const [currentPageSize, setCurrentPageSize] = useState(pageOptions.pageSize)
-    console.log(pageOptions.pageNumber)
-    console.log(pageOptions.pageSize)
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const { data } = useGetLekoviQuery<any>({
         ...({
@@ -68,38 +66,38 @@ function LekoviLista() {
     //console.log(data);
 
 
-    // useEffect(() => {
-    //     //console.log(isLoading);
-    //     if (data && data.result) {
-    //         const lekovi = handleSearchFilter(sortName, selectedCategory, searchValue)
-    //         //console.log(lekovi);
-    //         setLekItem(lekovi);
-    //         setLekovi(lekovi)
-    //         //console.log(data);
+    useEffect(() => {
+        //console.log(isLoading);
+        if (data && data.result) {
+            const lekovi = handleSearchFilter(sortName, selectedCategory, searchValue)
+            //console.log(lekovi);
+            setLekItem(lekovi);
+            setLekovi(lekovi)
+            //console.log(data);
 
-    //     }
-    // }, [searchValue])
+        }
+    }, [searchValue])
 
-    // useEffect(() => {
-    //     //console.log(isLoading);
-    //     if (!isLoading) {
-    //         if (data && data.apiResponse.result && data.apiResponse.result.length > 0) {
-    //             dispatch(setLekItem(data.apiResponse.result))
-    //             setLekovi(data.apiResponse.result)
-    //             //console.log(data)
-    //             const { TotalRecords } = JSON.parse(data.totalRecords)
-    //             setTotalRecords(TotalRecords)
-    //             const tempCategoryList = ["All"]
-    //             data.apiResponse.result.forEach((item: LekModel) => {
-    //                 if (tempCategoryList.indexOf(item.mainCategory) === -1) {
-    //                     tempCategoryList.push(item.mainCategory);
-    //                 }
-    //             })
-    //             setCategoryList(tempCategoryList)
-    //             //console.log(data);
-    //         }
-    //     }
-    // }, [isLoading, pageOptions.pageSize])
+    useEffect(() => {
+        //console.log(isLoading);
+        if (!isLoading) {
+            if (data && data.apiResponse.result && data.apiResponse.result.length > 0) {
+                dispatch(setLekItem(data.apiResponse.result))
+                setLekovi(data.apiResponse.result)
+                //console.log(data)
+                const { TotalRecords } = JSON.parse(data.totalRecords)
+                setTotalRecords(TotalRecords)
+                const tempCategoryList = ["All"]
+                data.apiResponse.result.forEach((item: LekModel) => {
+                    if (tempCategoryList.indexOf(item.mainCategory) === -1) {
+                        tempCategoryList.push(item.mainCategory);
+                    }
+                })
+                setCategoryList(tempCategoryList)
+                //console.log(data);
+            }
+        }
+    }, [isLoading, pageOptions.pageSize, pageOptions.bestSellers])
 
     useEffect(() => {
         if (data) {
@@ -236,46 +234,34 @@ function LekoviLista() {
 
     }
     const izvrsi = (event: any) => {
-        console.log(event.target.checked)
-        console.log("PETAR")
+        // console.log(event.target.checked)
+        // console.log("PETAR")
     }
     return (
         <>
             {isLoading && <MainLoader />}
             {!isLoading && (
                 <>
-                    {/* <div className='container'>/}
+                    <div className='container'>
                         <div className='row'>
-                            <div className='col-sm-12 col-md-6 col-lg-4'>
+                            <div className='col-sm-12 col-md-6 col-lg-4 w-75 '>
                                 <div className='searchbar'>
                                     <InputGroup>
                                         <FormControl onChange={onChangeSetSearch} placeholder="Search..." className='my-2'></FormControl>
                                     </InputGroup>
                                 </div>
                             </div>
-                            <div className='col-sm-12 col-md-6 col-lg-4'>
-                                <Form className='my-2'>
-                                    <Form.Check
-                                        type="checkbox"
-                                        id="checkbox"
-                                        label="Show best sellers"
-                                        onChange={izvrsi}
-                                    />
-                                </Form>
+                            <div className='col my-2'>
+                                <DropdownButton id="dropdown-primary-button" variant="secondary" title="Sort by">
+                                    {sortOptions.map((option, index) =>
+                                        <Dropdown.Item onClick={() => handleSortClick(index)} key={index}>{option}</Dropdown.Item>
+                                    )}
+                                </DropdownButton>
                             </div>
-                            <div className='col-sm-12 col-md-6 col-lg-4 my-2'>
-                                <div className='sortby'>
-                                    <DropdownButton id="dropdown-primary-button" variant="secondary" title="Sort by">
-                                        {sortOptions.map((option, index) =>
-                                            <Dropdown.Item onClick={() => handleSortClick(index)} key={index}>{option}</Dropdown.Item>
-                                        )}
-                                    </DropdownButton>
-                                </div>
-                            </div>
-                            <div className='col-sm-12 col-md-6 col-lg-4'>
+                            <div className='col my-2'>
                                 <div className='show'>
                                     <select
-                                        className="form-select mx-2"
+                                        className="form-select "
                                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                             handlePaginationClick("change", Number(e.target.value));
                                             setCurrentPageSize(Number(e.target.value));
@@ -291,9 +277,9 @@ function LekoviLista() {
                                 </div>
                             </div>
                         </div>
-                    </div > */}
+                    </div>
 
-                    {/* <div className='my-3'>
+                    <div className='my-3'>
                         <ul className='nav w-100 d-flex justify-content-center'>
                             {categoryList.map((categoryName, index) => (
                                 <li className='nav-item' key={index}>
@@ -305,7 +291,7 @@ function LekoviLista() {
                                 </li>
                             ))}
                         </ul>
-                    </div> */}
+                    </div>
                     <div className='container'>
                         <div className='row'>
                             {
@@ -316,22 +302,22 @@ function LekoviLista() {
                                     }).map((lek: LekModel, index: number) => (
 
 
-                                        <div className='col-sm-12 col-md-6 col-lg-4'>
-                                            <div className='card'>
-                                                <div className='card-body'>
-                                                    <h5 className='card-title'>{lek.nazivLeka}</h5>
-                                                    <p className="card-text">{lek.description}</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        // <div className='col-sm-12 col-md-6 col-lg-4'>
+                                        //     <div className='card'>
+                                        //         <div className='card-body'>
+                                        //             <h5 className='card-title'>{lek.nazivLeka}</h5>
+                                        //             <p className="card-text">{lek.description}</p>
+                                        //         </div>
+                                        //     </div>
+                                        // </div>
 
 
-                                        //<LekoviCard lek={lek} key={index} />
+                                        <LekoviCard lek={lek} key={index} />
                                     ))
                             }
                         </div>
                     </div>
-                    {/* <div className='d-flex justify-content-center align-items-center'>
+                    <div className='d-flex justify-content-center align-items-center'>
                         <div className='mx-2'>
                             {getPageDetails()}
                         </div>
@@ -348,7 +334,7 @@ function LekoviLista() {
                         >
                             <i className='bi bi-chevron-right'></i>
                         </button>
-                    </div> */}
+                    </div>
                 </>
             )
             }

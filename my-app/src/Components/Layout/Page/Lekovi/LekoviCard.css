@@ -59,8 +59,3 @@
   min-width: 200px;
   margin-bottom: 20px;
 }
-@media (max-width: 760px){
-  .media{
-    width: 75%;
-  }
-}

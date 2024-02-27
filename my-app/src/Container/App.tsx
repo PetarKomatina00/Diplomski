@@ -38,7 +38,7 @@ function App() {
       dispatch(setLoggedInUser({fullName, id, email, role}))
     }
   }, [])
-  console.log(data);
+  //console.log(data);
   useEffect(() => {
     if (!isLoading && data !== undefined) {
       
