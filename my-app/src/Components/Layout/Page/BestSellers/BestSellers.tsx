@@ -32,18 +32,18 @@ function BestSellers() {
     }
   }, [data, isLoading])
 
-  if (isLoading) {
+  if (isLoading || data.result === undefined) {
     return <MainLoader />
   }
   return (
-    <div className=' md-2'>
+    <div className='md-2'>
       <div className=''>
-        <div className=''>
+        <div className='container d-flex'>
           <BestSellerLabel />
         </div>
         <div className='container d-flex'>
           <div className='row '>
-            {isLoading ? <MainLoader /> :
+            {(isLoading) ? <MainLoader /> :
               data.result.map((lek: LekModel, index: number) => (
                 <LekoviCard lek={lek} key={index} />
               ))}

@@ -7,8 +7,19 @@ import { useCreateOrderMutation } from '../API/orderApi';
 import apiResponse from '../interfaces/apiResponse';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useUpdateTimesBoughtMutation } from '../API/LekItemApi';
+import { useTimer } from '../Components/Layout/Page/Lekovi/Common/TimerProvider';
 
 const CheckoutForm = ({ data, userInput, LekIDAndTimesBought }: orderSummaryProps) => {
+
+  const discount = localStorage.getItem("discount");
+  let newValue = 0;
+  if (discount != null) {
+    newValue = data.totalPrice - data.totalPrice * parseInt(discount) / 100;
+  }
+  console.log(discount);
+  const {timeInSeconds, setTimeInSeconds} = useTimer();
+  //console.log(timeInSeconds);
+  const steps = localStorage.getItem("steps");
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -31,9 +42,10 @@ const CheckoutForm = ({ data, userInput, LekIDAndTimesBought }: orderSummaryProp
       tempOrderDetail["nazivLeka"] = item.lek?.nazivLeka
       tempOrderDetail["price"] = item.lek?.price
       orderDetailsDTO.push(tempOrderDetail)
-      grandTotal += (item.kolicina! * item.lek?.price!)
+      grandTotal += (item.kolicina! * item.lek?.price!) - data.totalPrice * parseInt(discount!) / 100;
       totalItems += item.kolicina!;
     })
+    //console.log(data.cartItems)
     const myOrder = {
       pickupName: userInput.name,
       pickupPhoneNumber: userInput.phoneNumber,
@@ -57,11 +69,22 @@ const CheckoutForm = ({ data, userInput, LekIDAndTimesBought }: orderSummaryProp
       orderDetailsDTO: orderDetailsDTO,
     })
     setIsProcessing(true);
-    let response2 : any = await updateTimesBought({ data: LekIDAndTimesBought })
+    let response2: any = await updateTimesBought({ data: LekIDAndTimesBought })
     console.log(response2);
     if (response2.isSuccess) {
       console.log("Uspesno updejtovano timesboughtid")
     }
+
+    const response3 = await fetch('https://diplomskiapi.azurewebsites.net/api/auth/Steps/' + userInput.email + "/" + 0, {
+      method: "PUT"
+    })
+    if (response3.ok) {
+      console.log("uspesno promenjeni koraci");
+    }
+
+    localStorage.setItem("timer", timeInSeconds.toString())
+    localStorage.removeItem("discount");
+    setIsProcessing(false);
 
     const result = await stripe.confirmPayment({
       elements,
@@ -69,7 +92,6 @@ const CheckoutForm = ({ data, userInput, LekIDAndTimesBought }: orderSummaryProp
         return_url: "http://localhost:3000/OrderConfirmed"
       },
     });
-    setIsProcessing(false);
   };
 
   return (

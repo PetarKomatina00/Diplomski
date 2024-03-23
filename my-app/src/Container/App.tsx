@@ -25,30 +25,46 @@ import SviLekovi from '../Pages/Lekovi/SviLekovi';
 import Upsert from '../Pages/Lekovi/Upsert';
 import Obrisi from '../Pages/Lekovi/Obrisi';
 import LekoviLista from '../Components/Layout/Page/Lekovi/LekoviLista';
+import { TimerProvider } from '../Components/Layout/Page/Lekovi/Common/TimerProvider';
 
 function App() {
   const dispatch = useDispatch();
   const [skip, setSkip] = useState(true);
-  const userData : userModel = useSelector((state : RootState) => state.userAuthStore);
-  const { data, isLoading } = useGetShoppingCartQuery(userData.id, {skip : skip})
+  const userData: userModel = useSelector((state: RootState) => state.userAuthStore);
+  const { data, isLoading } = useGetShoppingCartQuery(userData.id, { skip: skip })
   useEffect(() => {
     const localToken = localStorage.getItem("token")
-    if(localToken){
-      const {fullName, id, email, role} : userModel = jwtDecode(localToken)
-      dispatch(setLoggedInUser({fullName, id, email, role}))
+    if (localToken) {
+      const { fullName, id, email, role }: userModel = jwtDecode(localToken)
+      dispatch(setLoggedInUser({ fullName, id, email, role }))
     }
   }, [])
   //console.log(data);
   useEffect(() => {
     if (!isLoading && data !== undefined) {
-      
       dispatch(setShoppingCart(data.result?.cartItems))
     }
   }, [data])
 
   useEffect(() => {
-    if(userData.id) setSkip(false) 
+    if (userData.id) setSkip(false)
   }, [userData])
+  const [timeInSeconds, setTimeInSeconds] = useState<number>(0)
+  const [timeInMinutes, setTimeInMinutes] = useState<number>(0)
+  const [timeInHours, setTimeInHours] = useState<number>(0)
+  useEffect(() => {
+    if (timeInSeconds === 60) {
+      setTimeInSeconds(0);
+      setTimeInMinutes(timeInMinutes + 1)
+    }
+    if (timeInMinutes === 60) {
+      setTimeInHours(timeInHours + 1);
+    }
+    const timer = setTimeout(() => {
+      setTimeInSeconds(timeInSeconds + 1);
+    }, 1000)
+    return () => clearTimeout(timer);
+  })
   return (
     <div>
       <Header />
@@ -59,18 +75,18 @@ function App() {
             path='/LekDetails/:lekID'
             element={<LekDetails />} />
           <Route path='/shoppingCart' element={<ShoppingCart />} />
-          <Route path ='/login' element = {<Login/>}/>
-          <Route path ='/register' element = {<Register/>}/>
-          <Route path = '/authentication' element = {<AuthenticationTest/>}/>
-          <Route path = '/authorization' element = {<AuthenticationTestAdmin/>}/>
-          <Route path = '/payment' element = {<Payment/>}/>
-          <Route path = '/orderConfirmed' element = {<OrderConfirmed/>}/>
-          <Route path = '/Lekovi/SviLekovi' element = {<SviLekovi/>}/>
-          <Route path = '/Lekovi/Upsert/:id' element = {<Upsert/>}/>
-          <Route path = '/Lekovi/Upsert/' element = {<Upsert/>}/>
-          <Route path = '/Lekovi/Obrisi/:id' element = {<Obrisi/>}/>
-          <Route path = '/accessDenied' element = {<AccessDenied/>}/>
-          <Route path = '/LekoviLista' element = {<LekoviLista/>}/>
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/authentication' element={<AuthenticationTest />} />
+          <Route path='/authorization' element={<AuthenticationTestAdmin />} />
+          <Route path='/payment' element={<Payment />} />
+          <Route path='/orderConfirmed' element={<OrderConfirmed />} />
+          <Route path='/Lekovi/SviLekovi' element={<SviLekovi />} />
+          <Route path='/Lekovi/Upsert/:id' element={<Upsert />} />
+          <Route path='/Lekovi/Upsert/' element={<Upsert />} />
+          <Route path='/Lekovi/Obrisi/:id' element={<Obrisi />} />
+          <Route path='/accessDenied' element={<AccessDenied />} />
+          <Route path='/LekoviLista' element={<LekoviLista />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </div>

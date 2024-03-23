@@ -34,20 +34,21 @@ function LekoviLista() {
     const [totalRecords, setTotalRecords] = useState(0);
     const [pageOptions, setPageOptions] = useState({
         pageNumber: 1,
-        pageSize: 2,
+        pageSize: 4,
         bestSellers: false
     })
     //
 
     const [currentPageSize, setCurrentPageSize] = useState(pageOptions.pageSize)
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const { data } = useGetLekoviQuery<any>({
+    const { data, refetch } = useGetLekoviQuery<any>({
         ...({
             currentPage: pageOptions.pageNumber,
             pageSize: pageOptions.pageSize,
             bestsellers: pageOptions.bestSellers
         })
     });
+
     const [lekovi, setLekovi] = useState<LekModel[]>([]);
 
     const [selectedCategory, setSelectedCategory] = useState("All")
@@ -63,11 +64,11 @@ function LekoviLista() {
         "Price: Low to High",
         "Price: High to Low",
     ]
-    //console.log(data);
+   //console.log(data);
 
 
     useEffect(() => {
-        //console.log(isLoading);
+        console.log("SEARCH VALUE SE PROMENIO");
         if (data && data.result) {
             const lekovi = handleSearchFilter(sortName, selectedCategory, searchValue)
             //console.log(lekovi);
@@ -79,12 +80,12 @@ function LekoviLista() {
     }, [searchValue])
 
     useEffect(() => {
-        //console.log(isLoading);
+        console.log("ISLOAING SE PROMENIO");
         if (!isLoading) {
             if (data && data.apiResponse.result && data.apiResponse.result.length > 0) {
                 dispatch(setLekItem(data.apiResponse.result))
                 setLekovi(data.apiResponse.result)
-                //console.log(data)
+                console.log(data)
                 const { TotalRecords } = JSON.parse(data.totalRecords)
                 setTotalRecords(TotalRecords)
                 const tempCategoryList = ["All"]
@@ -100,10 +101,11 @@ function LekoviLista() {
     }, [isLoading, pageOptions.pageSize, pageOptions.bestSellers])
 
     useEffect(() => {
-        if (data) {
+        //console.log("DATA SE PROMENIO")
+        if (data && data.apiResponse.result.length > 0 ) {
+            //console.log(data);
             setIsLoading(true);
             const timer = setTimeout(() => {
-                console.log(data.apiResponse.result)
                 setLekovi(data.apiResponse.result)
                 dispatch(setLekItem(data.apiResponse.result))
                 const { TotalRecords } = JSON.parse(data.totalRecords)
@@ -111,6 +113,9 @@ function LekoviLista() {
                 setIsLoading(false);
             }, 2000)
             return () => clearTimeout(timer);
+        }
+        else{
+            refetch();
         }
     }, [data])
     const handleCategoryClick = (i: number) => {
@@ -188,7 +193,6 @@ function LekoviLista() {
         return tempLekovi;
     }
 
-
     if (isLoading) {
         return <MainLoader />
     }
@@ -211,7 +215,7 @@ function LekoviLista() {
         return `${dataStartNumber} - ${dataEndNumber < totalRecords ? dataEndNumber : totalRecords} of ${totalRecords}`
     }
     const handlePaginationClick = (direction: string, pageSize?: number) => {
-        console.log(direction)
+        //console.log(direction)
         if (direction === "prev") {
             setPageOptions({
                 pageSize: pageOptions.pageSize, pageNumber: pageOptions.pageNumber - 1, bestSellers: pageOptions.bestSellers
@@ -224,19 +228,19 @@ function LekoviLista() {
         }
 
         else if (direction === "change") {
-            console.log("uslo")
+            //console.log("uslo")
             setPageOptions({
                 pageSize: pageSize ? pageSize : 2,
                 pageNumber: 1,
                 bestSellers: pageOptions.bestSellers
             })
         }
-
     }
     const izvrsi = (event: any) => {
         // console.log(event.target.checked)
         // console.log("PETAR")
     }
+    //console.log(lekovi);
     return (
         <>
             {isLoading && <MainLoader />}
@@ -269,9 +273,9 @@ function LekoviLista() {
                                         style={{ width: "80px" }}
                                         value={currentPageSize}
                                     >
-                                        <option>2</option>
                                         <option>4</option>
-                                        <option>6</option>
+                                        <option>8</option>
+                                        <option>12</option>
                                         <option>20</option>
                                     </select>
                                 </div>
@@ -279,20 +283,31 @@ function LekoviLista() {
                         </div>
                     </div>
 
-                    <div className='my-3'>
-                        <ul className='nav w-100 d-flex justify-content-center'>
-                            {categoryList.map((categoryName, index) => (
-                                <li className='nav-item' key={index}>
-                                    <button
-                                        onClick={() => handleCategoryClick(index)}
-                                        className={`nav-link p-0 pb-2 custom-buttons fs-5 ${index === 0 && "active"}`}>
-                                        {categoryName}
-                                    </button>
-                                </li>
-                            ))}
+                    <div className=''>
+                        <ul className='navbar navbar-expand-md navbar-light w-100 d-flex justify-content-center'>
+                            <div className='container-fluid'>
+                                <a className="navbar-brand" href="#"></a>
+                                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span className="navbar-toggler-icon"></span>
+                                </button>
+                                <div className="collapse navbar-collapse justify-content-center " id="navbarNav">
+                                    <ul className='navbar-nav'>
+                                        {categoryList.map((categoryName, index) => (
+                                            <li className='nav-item' key={index}>
+                                                <a
+                                                    onClick={() => handleCategoryClick(index)}
+                                                    className={`nav-link p-0 custom-buttons fs-5 ${index === 0 && "active"}`}>
+                                                    {categoryName}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+
                         </ul>
                     </div>
-                    <div className='container'>
+                    <div className=' container d-flex'>
                         <div className='row'>
                             {
                                 (lekovi === undefined || lekovi === null) ? <MainLoader /> :
@@ -301,15 +316,6 @@ function LekoviLista() {
                                             item : item.nazivLeka.toLowerCase().includes(searchValue)
                                     }).map((lek: LekModel, index: number) => (
 
-
-                                        // <div className='col-sm-12 col-md-6 col-lg-4'>
-                                        //     <div className='card'>
-                                        //         <div className='card-body'>
-                                        //             <h5 className='card-title'>{lek.nazivLeka}</h5>
-                                        //             <p className="card-text">{lek.description}</p>
-                                        //         </div>
-                                        //     </div>
-                                        // </div>
 
 
                                         <LekoviCard lek={lek} key={index} />

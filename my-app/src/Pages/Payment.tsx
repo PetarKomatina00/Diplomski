@@ -24,7 +24,7 @@ function Payment() {
             <OrderSummary data={apiResult} userInput={userInput} LekIDAndTimesBought = {LekIDAndTimesBought} />
           </div>
           <div className='col-md-4 offset-md-1'>
-            <h3 className='text-success'>Payment</h3>
+            <h3 className='text-success pt-3'>Payment</h3>
             <div className='mt-5'>
               <CheckoutForm data={apiResult} userInput={userInput} LekIDAndTimesBought = {LekIDAndTimesBought} />
             </div>

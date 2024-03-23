@@ -13,15 +13,20 @@ import { Provider } from 'react-redux';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { TimerProvider } from './Components/Layout/Page/Lekovi/Common/TimerProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <Provider store = {store}>
-    <BrowserRouter>
-    <ToastContainer/>
-      <App />
-    </BrowserRouter>
-  </Provider>
+  <TimerProvider>
+    <Provider store={store}>
+      <BrowserRouter>
+        <ToastContainer />
+
+        <App />
+
+      </BrowserRouter>
+    </Provider>
+  </TimerProvider>
 );

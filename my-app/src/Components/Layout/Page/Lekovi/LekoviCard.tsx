@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import LekModel from '../../../../interfaces/LekModel'
 import { Link, useNavigate } from 'react-router-dom';
 import { useUpdateShoppingCartMutation } from '../../../../API/shoppingCartApi';
@@ -9,10 +9,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../Storage/Redux/store';
 import userModel from '../../../../interfaces/userModel';
 import './LekoviCard.css'
+
 interface Props {
     lek: LekModel
 }
 function LekoviCard(props: Props) {
+
     const navigate = useNavigate();
     const [isAddingToCart, setIsAddingToCart] = useState<boolean>(false);
     const [updateShoppingCart] = useUpdateShoppingCartMutation();
@@ -46,16 +48,16 @@ function LekoviCard(props: Props) {
         //         </div>
         //     </div>
         // </div>
-                <div className='col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl p-4' style={{ backgroundColor: "#F5F5F5" }}>
+                <div className='col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4 p-4' style={{ backgroundColor: "#F5F5F5" }}>
                     <div className='card'
                         style={{ boxShadow: "0 1px 7px 0 rgb(0 0 0 / 50%)" }}>
                         <div className='card-body pt-2'>
-                            <div className='row col-10 offset-1 p-4 container'>
+                            <div className='row'>
                                 <Link to={`/LekDetails/${props.lek.lekID}`}>
                                     <img
                                         src={props.lek.image}
-                                        style={{ borderRadius: "50%" }}
-                                        className='w-100 mt-5 image-box media'
+                                        style={{ borderRadius: "75%" }}
+                                        className='w-100 mt-5 image-box '
                                     ></img>
                                 </Link>
                             </div>
@@ -66,7 +68,7 @@ function LekoviCard(props: Props) {
                                     position : "absolute",
                                     top : "15px",
                                     left : "15px",
-                                    padding : "5px 10px",
+                                    padding : "5px 5px",
                                     borderRadius : "3px",
                                     outline : "none, !important",
                                     cursor : "pointer"
@@ -100,7 +102,7 @@ function LekoviCard(props: Props) {
 
                             <div className='text-center'>
                                 <p className='card-title m-0 text-success fs-3'>
-                                    <Link to={`/LekDetails/${props.lek.lekID}`}
+                                    <Link to={`/LekDetails/${props.lek.lekID}`} 
                                         style={{ textDecoration: "none", color: "green" }}>
                                         {props.lek.nazivLeka}
                                     </Link>

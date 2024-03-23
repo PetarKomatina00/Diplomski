@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { cartItemModel } from '../../interfaces/cartItemModel';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,10 +10,42 @@ let logo = require('../../Assets/Images/web-developer.png');
 function Header() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const [steps, setSteps] = useState<number>(0);
     const shoppingCartFromStore: cartItemModel[] = useSelector(
         (state: RootState) => state.shoppingCartStore.cartItems ?? []
     )
     const userData: userModel = useSelector((state: RootState) => state.userAuthStore)
+    let email = "";
+    if (userData != undefined || userData != null) {
+        email = userData.email     
+    }
+    if (email != "") {
+        fetch('https://diplomskiapi.azurewebsites.net/api/auth/' + email)
+            .then(x => {
+                return x.json()
+            })
+            .then(x => {
+                setSteps(x.result);
+            })
+    }
+    //console.log(steps);
+    useEffect(() => {
+        let discount = 0;
+        if(steps > 500){
+            discount = 70;
+        }
+        else if(steps > 250){
+            discount = 50;
+        }
+        else if(steps > 50){
+            discount = 30;
+        }
+        else if(steps > 20){
+            discount = 25;
+        }
+        localStorage.setItem("discount", discount.toString())
+    }, [steps])
     const handleLogout = () => {
         localStorage.removeItem("token");
         dispatch(setLoggedInUser({ ...emptyUserState }))
@@ -32,6 +64,9 @@ function Header() {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0 w-100">
+                            <li className="nav-item">
+                                {steps}
+                            </li>
                             <li className="nav-item">
                                 <NavLink className="nav-link active" aria-current="page" to="/">Home</NavLink>
                             </li>

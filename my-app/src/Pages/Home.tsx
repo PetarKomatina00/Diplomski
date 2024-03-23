@@ -13,12 +13,6 @@ let treca = require('../Assets/Images/Ashwagangha.png');
 function Home() {
 
   const [images, SetImages] = useState([])
-  // const images = [
-  //   `${prva}`,
-  //   `${druga}`,
-  //   `${treca}`
-  // ]
-
   useEffect(() => {
     fetch('https://diplomskiapi.azurewebsites.net/api/Lek/GetAllBlobURL')
       .then(response => {
@@ -38,7 +32,7 @@ function Home() {
     <div className="">
       <div className="" >
         <div className='text-center'>
-          <ShopNow />
+          <ShopNow/>
         </div>
         <div className=''>
           <Slider images={images} />

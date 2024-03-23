@@ -5,8 +5,13 @@ import { cartItemModel } from '../../interfaces/cartItemModel'
 import lekItemApi from '../../API/LekItemApi'
 
 function OrderSummary({ data, userInput, LekIDAndTimesBought }: orderSummaryProps) {
-    
-    console.log(LekIDAndTimesBought)
+
+    //console.log(LekIDAndTimesBought)
+    const discount = localStorage.getItem("discount");
+    let newValue = 0;
+    if(discount != null && discount != "0"){
+        newValue = data.totalPrice - data.totalPrice * parseInt(discount) / 100;
+    }
     return (
         <div>
             {""}
@@ -16,8 +21,8 @@ function OrderSummary({ data, userInput, LekIDAndTimesBought }: orderSummaryProp
                 <div className='border py-3 px-2'>{userInput.email}</div>
                 <div className='border py-3 px-2'>{userInput.phoneNumber}</div>
                 <div className='border py-3 px-2'>
-                    <h4 className='text-sucess'>Lekovi</h4>
-                    <div className='p-3'>
+                    <h4 className='text-success'>Lekovi</h4>
+                    <div className=''>
                         {data.cartItems.map((cartItems: any, index: number) => {
                             return (
                                 <div className='d-flex' key={index}>
@@ -25,17 +30,28 @@ function OrderSummary({ data, userInput, LekIDAndTimesBought }: orderSummaryProp
                                         <p>{cartItems.lek?.nazivLeka}</p>
                                         <p>${cartItems.lek?.price} x {cartItems.kolicina}</p>
                                     </div>
-                                    <p style={{ width: "70px", textAlign: "right" }}>
+                                    {/* <p style={{ width: "70px", textAlign: "right" }}>
                                         $100
-                                        </p>
+                                    </p> */}
                                 </div>
                             )
                         })}
                         <hr />
-                        <h4 className='text-danger' style={{ textAlign: "right" }}>
-                            $
-                            {data.totalPrice.toFixed(2)}
-                        </h4>
+                            <>
+                                <h4 style={{ textAlign: "left" }}>
+                                    Popust zbog broja koraka
+                                </h4>
+                                <h4 className='text-danger' style={{ textAlign: "right", textDecoration: discount != "0" ? "line-through" : "none"}}>
+                                    $
+                                    {data.totalPrice.toFixed(2)}
+                                </h4>
+                                {(newValue != data.totalPrice && discount != "0") && (
+                                    <h4 className='text-success' style={{ textAlign: "right" }}>
+                                    $
+                                    {newValue.toFixed(2)}
+                                </h4>
+                                )}   
+                            </>
                     </div>
                 </div>
             </div>

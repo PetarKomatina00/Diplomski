@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import MainLoader from '../../Components/Layout/Page/Lekovi/Common/MainLoader';
+import { useTimer } from '../../Components/Layout/Page/Lekovi/Common/TimerProvider';
 const calculateTimeLeft = (number: number) => {
     if(number > 0){
         number --;
@@ -27,7 +28,6 @@ const OrderConfirmed = () => {
                 <div className='pb-5'>
                     <h2 className='text-success'>Order has been Confirmed</h2>
                     <h2 className='mt-3'>Your order ID: XX</h2>
-                    <p>TEST TEST</p>
                     <p>You will be redirected in {timeLeft}.</p>
                     <img src="" style={{ width: "40px", borderRadius: "30px" }}></img>
                 </div>
