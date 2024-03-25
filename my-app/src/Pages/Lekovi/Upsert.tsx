@@ -4,6 +4,7 @@ import toastNotify from '../../Helper/toastNotify';
 import { useAddLekMutation, useGetLekByIDQuery, useGetLekoviQuery, useUpdateLekMutation } from '../../API/LekItemApi';
 import apiResponse from '../../interfaces/apiResponse';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Dropdown } from 'react-bootstrap';
 
 type ApiResponse = {
     data: {
@@ -42,6 +43,29 @@ function Upsert() {
     const [updateLek] = useUpdateLekMutation();
     const { id } = useParams();
     const { data } = useGetLekByIDQuery(id);
+
+    const [categoryList, setCategoryList] = useState<string[]>([]);
+
+    useEffect(() => {
+        fetch('https://diplomskiapi.azurewebsites.net/api/Lek/AllCategory')
+            .then(x => {
+                if (x.ok) {
+                    return x.json()
+                }
+            })
+            .then(x => {
+                const uniqueCategoryList: any = [...new Set(x)]
+                //console.log(typeof (uniqueCategoryList))
+                setCategoryList(uniqueCategoryList);
+            })
+    }, [])
+    const [selectedCategory, setSelectedCategory] = useState<string>(categoryList[0])
+    const handleDropDownChange = (e: any) => {
+        setSelectedCategory(e.target.value)
+    }
+    const options = [
+        'one', 'two', 'three'
+    ];
     useEffect(() => {
         if (data && data.result) {
             console.log(data.result);
@@ -99,25 +123,25 @@ function Upsert() {
             setIsLoading(false);
             return;
         }
-        console.log("this is " + LekInput.bestSellers)
+        //console.log("this is " + LekInput.bestSellers)
         const formData = new FormData();
         formData.append("nazivLeka", LekInput.name)
         formData.append("description", LekInput.description)
         formData.append("isbn", LekInput.isbn)
         formData.append("price", LekInput.price)
-        formData.append("mainCategory", LekInput.category)
+        formData.append("mainCategory", selectedCategory)
         formData.append("bestSeller", (LekInput.bestSellers).toString())
         formData.append("timesBought", "0")
         if (imageToBeDisplayed) formData.append("image", imageToBeStore)
-        for (let x of formData.values())
-            console.log(x)
-        let response : apiResponse;
+        // for (let x of formData.values())
+        //     console.log(x)
+        let response: apiResponse;
         if (id) {
             formData.append("lekID", id);
             response = await updateLek({ data: formData, id });
-            
+
             if (response.data?.isSuccess) {
-                console.log(response);
+                //console.log(response);
                 toastNotify("Lek je uspesno izmenjen", "success");
             }
             else {
@@ -126,8 +150,8 @@ function Upsert() {
         }
         else {
             response = await addLek(formData);
-            console.log(response);
-            console.log(response.data?.isSuccess)
+            //console.log(response);
+            //console.log(response.data?.isSuccess)
             if (response.data?.isSuccess) {
                 toastNotify("Lek je uspesno napravljen", "success");
             }
@@ -189,7 +213,27 @@ function Upsert() {
                             value={LekInput.price}
                             onChange={handleLekInput}
                         />
-                        <input
+                        {/* <Dropdown className='mt-3' >
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                                {categoryList[0]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu onChange={handleDropDownChange}>
+                                {categoryList.map((category, index) =>
+                                    <Dropdown.Item key={index}>{category}</Dropdown.Item>
+                                )}
+                            </Dropdown.Menu>
+                        </Dropdown> */}
+                        <select className="mt-3 form-control" value={selectedCategory} onChange={handleDropDownChange}>
+                            <option value="">Select a category</option>
+                            {categoryList.map((category, index) =>
+                                <option key={index} value={category}>
+                                    {category}
+                                </option>
+                            )}
+                        </select>
+                        {/* <Dropdown options={options} value={categoryList[0]} placeholder="Select a category" />; */}
+                        {/* <input
                             type="text"
                             className='form-control mt-3'
                             placeholder='Enter Category'
@@ -197,7 +241,7 @@ function Upsert() {
                             name="category"
                             value={LekInput.category}
                             onChange={handleLekInput}
-                        />
+                        /> */}
                         <input
                             type="text"
                             className='form-control mt-3'
@@ -207,7 +251,7 @@ function Upsert() {
                             value={LekInput.timesBought}
                             onChange={handleLekInput}
                         />
-                        <select className='form-control mt-3'  onChange={handleSelectedValue}>
+                        <select className='form-control mt-3' onChange={handleSelectedValue}>
                             <option value="false" >False</option>
                             <option value="true" >True</option>
                         </select>

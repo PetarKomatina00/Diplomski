@@ -50,7 +50,7 @@ const SviLekovi = () => {
     ]
 
     const [totalRecords, setTotalRecords] = useState(0);
-    //console.log(data);
+    //(data);
     //console.log(isLoading)
     const [deleteLek] = useDeleteLekMutation();
     const navigate = useNavigate();
@@ -75,6 +75,9 @@ const SviLekovi = () => {
     useEffect(() => {
         //console.log(isLoading);
         if (!isLoading) {
+            if(data.apiResponse.result.length === 0){
+                refetch();
+            }
             if (data && data.apiResponse.result && data.apiResponse.result.length > 0) {
 
                 //console.log("USLO")
@@ -98,10 +101,16 @@ const SviLekovi = () => {
     }, [isLoading, pageOptions.pageSize])
 
     useEffect(() => {
-        if (!isLoading && (data === null || data === undefined || data.apiResponse.result === undefined || data.apiResponse.result === null)) {
+        if (!isLoading 
+            || data === null 
+            || data === undefined 
+            || data.apiResponse.result === undefined 
+            || data.apiResponse.result === null
+            || data.apiResponse.result.length === 0) {
             refetch();
         }
         if (data) {
+            //console.log(data);
             setIsLoading(true);
             const timer = setTimeout(() => {
                 //console.log(data.apiResponse.result)
@@ -141,7 +150,7 @@ const SviLekovi = () => {
 
         return `${dataStartNumber} - ${dataEndNumber < totalRecords ? dataEndNumber : totalRecords} of ${totalRecords}`
     }
-    if (Loading === true || isLoading === true) {
+    if (Loading === true || isLoading === true || lekovi === undefined || data.apiResponse.result.length === 0) {
         return <MainLoader />
     }
 
@@ -167,7 +176,7 @@ const SviLekovi = () => {
                 toastNotify("Slika je uspesno postavljena.", "success");
             }
             else{
-                toastNotify("Nesto otislo po zlu.", "error");
+                toastNotify("Nesto je otislo po zlu.", "error");
             }
         })
     }
@@ -177,7 +186,7 @@ const SviLekovi = () => {
     return (
         <>
 
-            {isLoading && lekovi === undefined && <MainLoader />}
+            {(isLoading && lekovi === undefined) && <MainLoader />}
             {!isLoading && lekovi !== undefined && (
                 <div className=''>
                     <div className='table p-5'>
@@ -191,12 +200,11 @@ const SviLekovi = () => {
                         <div className='p-2'>
                             <div className='row border'>
                                 <div className='col-2'>Image</div>
-                                <div className='col-1'>ID</div>
                                 <div className='col-2'>Name</div>
                                 <div className='col-2'>Category</div>
                                 <div className='col-1'>Price</div>
-                                <div className='col-2'>Special Tag</div>
-                                <div className='col-2'>Action</div>
+                                <div className='col-2'>Description</div>
+                                <div className='col-2' style={{textAlign: "right"}}>Action</div>
                             </div>
                             {showDiv && (
                                 <div className='overlay'>
@@ -215,19 +223,21 @@ const SviLekovi = () => {
                                                 alt="no content" style={{ width: "100%", maxWidth: "120px" }}>
                                             </img>
                                         </div>
-                                        <div className='col-1'>{lek.lekID}</div>
                                         <div className='col-2'>{lek.nazivLeka}</div>
-                                        <div className='col-2'>{lek.description}</div>
-                                        <div className='col-1'>{lek.price}</div>
                                         <div className='col-2'>{lek.mainCategory}</div>
-                                        <div className='col-2'>
+                                        <div className='col-1'>{lek.price}</div>
+                                        <div className='col-2'>{lek.description}</div>
+
+                                        
+                                        
+                                        <div className='col-2' style={{textAlign: "right"}}>
                                             <button className='btn btn-success mediaPencilFill'>
                                                 <i className='bi bi-pencil-fill'
                                                     onClick={() => navigate("/Lekovi/Upsert/" + lek.lekID)}
                                                 ></i>
                                             </button>
                                             {/* Ispraviti izgled kada se smanji rezolucija*/}
-                                            <button className='btn btn-danger mx-2'>
+                                            <button className='btn btn-danger ms-2' >
                                                 <i className='bi bi-trash-fill'
                                                     onClick={() => handleLekDelete(lek.lekID)}></i>
                                             </button>

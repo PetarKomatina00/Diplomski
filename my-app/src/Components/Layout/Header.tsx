@@ -29,6 +29,9 @@ function Header() {
                 setSteps(x.result);
             })
     }
+    useEffect(() => {
+        console.log(shoppingCartFromStore)
+    }, [])
     //console.log(steps);
     useEffect(() => {
         let discount = 0;
@@ -120,6 +123,7 @@ function Header() {
                                                     border: "none",
                                                     height: "40px",
                                                     width: "100px",
+                                                    backgroundColor: "transparent"
                                                 }}
                                                 onClick={handleLogout}>
                                                 Logout

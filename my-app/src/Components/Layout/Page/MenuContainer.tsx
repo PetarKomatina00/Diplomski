@@ -36,18 +36,6 @@ const MenuContainer = ({ getActiveIndex, images, isMouseEnter, isMouseLeave}: an
                                 </li>
                             ))
                         }
-                        {/* <li className="nav-item" onMouseOver={() => getActiveIndex(1)} >
-                            <a className="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li className="nav-item" onMouseOver={() => getActiveIndex(2)}>
-                            <a className="nav-link" href="#">Features</a>
-                        </li>
-                        <li className="nav-item" onMouseOver={() => getActiveIndex(3)}>
-                            <a className="nav-link" href="#">Pricing</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link disabled" href="#" aria-disabled="true">Disabled</a>
-                        </li> */}
                     </ul>
                 </div>
             </div>

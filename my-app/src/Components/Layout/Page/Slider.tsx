@@ -18,13 +18,24 @@ const Slider = ({ images }: ImageSliderProps) => {
     const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
     const [isMouseOver, setIsMouseOver] = useState<boolean>(false);
     let timer: TimeoutId
+    const broj = images.length;
+    if(broj === 0){
+        console.log("kako")
+    }
     useEffect(() => {
+        //console.log(images.length);
         timer = setTimeout(() => {
-            if (images.length === 0) return 0;
+            //console.log("USLO")
+            if (broj === 0) {
+                //console.log(broj + "asd")
+                return 0;
+            }
             if (!isMouseOver) setCurrentImageIndex((prev) => (prev + 1) % images.length)
+            //console.log("CurrentImageIndex: " + currentImageIndex)
         }, 3000)
-        if(isMouseOver) return () => clearTimeout(timer);
-    }, [currentImageIndex])
+        
+        return () => clearTimeout(timer);
+    }, [currentImageIndex, images.length])
 
     const getActiveIndexFromMenuContainer = (index: number) => {
         //console.log(index);
@@ -42,7 +53,7 @@ const Slider = ({ images }: ImageSliderProps) => {
         <>
             {(
                 <div id="carouselExampleSlidesOnly" className="carousel-slide" data-bs-ride="carousel">
-                    <div className="carousel-inner">
+                    <div className="carousel-inner" >
                         {images.map((image: any, idx: number) => (
                             <div key={idx} className={`carousel-item ${idx === currentImageIndex ? 'active' : ''}`}>
                                 <img src={image} className="d-block w-100" alt={`Slide ${idx}`} />

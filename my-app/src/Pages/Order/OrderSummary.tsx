@@ -12,6 +12,7 @@ function OrderSummary({ data, userInput, LekIDAndTimesBought }: orderSummaryProp
     if(discount != null && discount != "0"){
         newValue = data.totalPrice - data.totalPrice * parseInt(discount) / 100;
     }
+    const checkIfDiscountExists = (newValue != data.totalPrice && discount != "0")
     return (
         <div>
             {""}
@@ -21,7 +22,7 @@ function OrderSummary({ data, userInput, LekIDAndTimesBought }: orderSummaryProp
                 <div className='border py-3 px-2'>{userInput.email}</div>
                 <div className='border py-3 px-2'>{userInput.phoneNumber}</div>
                 <div className='border py-3 px-2'>
-                    <h4 className='text-success'>Lekovi</h4>
+                    <h4 className='text-success'>Supplements</h4>
                     <div className=''>
                         {data.cartItems.map((cartItems: any, index: number) => {
                             return (
@@ -39,13 +40,12 @@ function OrderSummary({ data, userInput, LekIDAndTimesBought }: orderSummaryProp
                         <hr />
                             <>
                                 <h4 style={{ textAlign: "left" }}>
-                                    Popust zbog broja koraka
+                                    {checkIfDiscountExists ? <h4 className='text-success'>Discount for number of steps</h4>: <h4 className='text-success'>Price</h4>}
                                 </h4>
                                 <h4 className='text-danger' style={{ textAlign: "right", textDecoration: discount != "0" ? "line-through" : "none"}}>
-                                    $
-                                    {data.totalPrice.toFixed(2)}
+                                    {<p className={checkIfDiscountExists ? "text-danger" : "text-success"}>${data.totalPrice.toFixed(2)}</p>}
                                 </h4>
-                                {(newValue != data.totalPrice && discount != "0") && (
+                                {checkIfDiscountExists && (
                                     <h4 className='text-success' style={{ textAlign: "right" }}>
                                     $
                                     {newValue.toFixed(2)}

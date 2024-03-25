@@ -9,13 +9,19 @@ const TimerContext= createContext<{
 });
 
 export const TimerProvider = ({children} : any) => {
-    const [timeInSeconds, setTimeInSeconds] = useState<number>(0)
+
+    const time : string | null = (localStorage.getItem("time"))
+    let timeInSec = 0;
+    if(time !== null){
+        timeInSec = parseInt(time);
+    }
+    const [timeInSeconds, setTimeInSeconds] = useState<number>(timeInSec)
+    
     useEffect(() => {
-        const timer = setTimeout(() => {
-            //console.log(timeInSeconds)
-            setTimeInSeconds((time) => time + 1);
+        const timer = setInterval(() => {
+            setTimeInSeconds((time) => time - 1);
         }, 1000)
-        return () => clearTimeout(timer);
+        return () => clearInterval(timer);
     }, [timeInSeconds])
     return (
         <TimerContext.Provider value = {{timeInSeconds, setTimeInSeconds}}>
