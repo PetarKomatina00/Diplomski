@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -8,7 +8,7 @@ function Payment() {
   const {
     state: { apiResult, userInput, LekIDAndTimesBought }
   } = useLocation();
-  const stripePromise = loadStripe('pk_test_51LDpx9JAtCWImzba47BV4k1KYqnjJos2TQ6y8RAyjFG0w8y3Ic9V3q5vgHO9EHQ04giPMIhwBrgukvTb2Mvk1kGe00cPtngTbA');
+  const [stripePromise, setStripePromise] = useState(() => loadStripe('pk_test_51LDpx9JAtCWImzba47BV4k1KYqnjJos2TQ6y8RAyjFG0w8y3Ic9V3q5vgHO9EHQ04giPMIhwBrgukvTb2Mvk1kGe00cPtngTbA'));
   const options = {
     clientSecret: apiResult.clientSecret,
   };

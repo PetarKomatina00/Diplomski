@@ -37,8 +37,6 @@ function LekoviLista() {
         pageSize: 4,
         bestSellers: false
     })
-    //
-
     const [currentPageSize, setCurrentPageSize] = useState(pageOptions.pageSize)
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const { data, refetch } = useGetLekoviQuery<any>({

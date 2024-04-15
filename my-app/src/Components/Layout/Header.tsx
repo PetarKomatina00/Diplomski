@@ -20,18 +20,23 @@ function Header() {
     if (userData != undefined || userData != null) {
         email = userData.email     
     }
-    if (email != "") {
-        fetch('https://diplomskiapi.azurewebsites.net/api/auth/' + email)
-            .then(x => {
-                return x.json()
-            })
-            .then(x => {
-                setSteps(x.result);
-            })
-    }
+    
+    useEffect(() => {
+        if (email != "") {
+            fetch('https://diplomskiapi.azurewebsites.net/api/auth/' + email)
+                .then(x => {
+                    return x.json()
+                })
+                .then(x => {
+                    setSteps(x.result);
+                })
+        }
+        console.log(shoppingCartFromStore)
+        console.log(userData);
+    }, [])
     useEffect(() => {
         console.log(shoppingCartFromStore)
-    }, [])
+    }, [shoppingCartFromStore])
     //console.log(steps);
     useEffect(() => {
         let discount = 0;
@@ -91,7 +96,7 @@ function Header() {
                                     Authorization
                                 </NavLink>
                             </li> */}
-                            {true && <li className="nav-item dropdown">
+                            {userData.id && <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Admin panel
                                 </a>

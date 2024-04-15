@@ -27,8 +27,17 @@ export const shoppingCartSlice = createSlice({
                 }
                 return item;
             })
+        },
+        clearCart : (state, action) => {
+            state.cartItems = state.cartItems?.filter((item) => {
+                console.log(item);
+                console.log(action.payload)
+                if(item.cartItemID !== action.payload){
+                    console.log("wooho")
+                }
+            } )
         }
     },
 });
-export const { setShoppingCart, updateQuantity, removeFromCart } = shoppingCartSlice.actions;
+export const { setShoppingCart, updateQuantity, removeFromCart, clearCart } = shoppingCartSlice.actions;
 export const shoppingCartReducer = shoppingCartSlice.reducer;
