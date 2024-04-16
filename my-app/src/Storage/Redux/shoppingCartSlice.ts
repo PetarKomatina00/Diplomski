@@ -33,7 +33,7 @@ export const shoppingCartSlice = createSlice({
                 console.log(item);
                 console.log(action.payload)
                 if(item.cartItemID !== action.payload){
-                    console.log("wooho")
+                    return null;
                 }
             } )
         }

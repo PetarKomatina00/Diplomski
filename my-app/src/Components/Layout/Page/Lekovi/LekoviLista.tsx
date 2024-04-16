@@ -58,7 +58,6 @@ function LekoviLista() {
     const sortOptions: Array<string> = [
         "A - Z",
         "Z - A",
-        "Best sellers",
         "Price: Low to High",
         "Price: High to Low",
     ]
@@ -178,14 +177,11 @@ function LekoviLista() {
                 b.nazivLeka.toLowerCase().charCodeAt(0) -
                 a.nazivLeka.toLowerCase().charCodeAt(0))
         }
-        if (sortType === "Best sellers") {
-            tempLekovi.sort((a: LekModel) =>
-                a.bestSeller)
-        }
 
-        // if(temp != null){
-        //     //console.log(temp);
-        //     tempLekovi = temp;
+        //Bug with bestsellers
+        // if (sortType === "Best sellers") {
+        //     tempLekovi.sort((a: LekModel) =>
+        //         a.bestSeller)
         // }
         //console.log(tempLekovi)
         return tempLekovi;

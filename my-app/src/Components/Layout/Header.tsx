@@ -31,12 +31,17 @@ function Header() {
                     setSteps(x.result);
                 })
         }
-        console.log(shoppingCartFromStore)
-        console.log(userData);
+        //console.log(userData.role);
+        // console.log(shoppingCartFromStore)
+        // console.log(userData);
+        console.log(steps);
     }, [])
     useEffect(() => {
-        console.log(shoppingCartFromStore)
-    }, [shoppingCartFromStore])
+        console.log(steps);
+    }, [steps])
+    // useEffect(() => {
+    //     console.log(shoppingCartFromStore)
+    // }, [shoppingCartFromStore])
     //console.log(steps);
     useEffect(() => {
         let discount = 0;
@@ -59,7 +64,6 @@ function Header() {
         dispatch(setLoggedInUser({ ...emptyUserState }))
         navigate("/")
     }
-
     return (
         <div>
             <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
@@ -96,7 +100,7 @@ function Header() {
                                     Authorization
                                 </NavLink>
                             </li> */}
-                            {userData.id && <li className="nav-item dropdown">
+                            {userData.role === "admin" && <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Admin panel
                                 </a>

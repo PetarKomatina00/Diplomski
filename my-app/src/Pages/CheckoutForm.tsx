@@ -9,11 +9,18 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useUpdateTimesBoughtMutation } from '../API/LekItemApi';
 import { useTimer } from '../Components/Layout/Page/Lekovi/Common/TimerProvider';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearCart } from '../Storage/Redux/shoppingCartSlice';
+import { clearCart, setShoppingCart } from '../Storage/Redux/shoppingCartSlice';
 import { RootState } from '../Storage/Redux/store';
+import { shoppingCartModel } from '../interfaces/shoppingCartModel';
+import shoppingCartApi, { useDeleteShoppingCartMutation } from '../API/shoppingCartApi';
+
+const initalState : shoppingCartModel= {
+  cartItems: [],
+};
 
 const CheckoutForm = ({ data, userInput, LekIDAndTimesBought }: orderSummaryProps) => {
   const dispatch = useDispatch();
+  const [deleteShoppingCart] = useDeleteShoppingCartMutation();
   const shoppingCartFromStore: cartItemModel[] = useSelector(
     (state: RootState) => state.shoppingCartStore.cartItems ?? []
   )
@@ -30,23 +37,15 @@ const CheckoutForm = ({ data, userInput, LekIDAndTimesBought }: orderSummaryProp
   const [isProcessing, setIsProcessing] = useState(false);
   const [createOrder] = useCreateOrderMutation();
   const [updateTimesBought] = useUpdateTimesBoughtMutation();
-
-  useEffect(() => {
-    console.log(shoppingCartFromStore.map((x) => {
-      console.log(x);
-    }));
-  }, [shoppingCartFromStore])
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-
     if (!stripe || !elements) {
       return;
     }
     let grandTotal = 0;
     let totalItems = 0;
     const orderDetailsDTO: any = [];
-    console.log(data);
+    //console.log(data);
     data.cartItems.forEach((item: any) => {
       const tempOrderDetail: any = {};
       tempOrderDetail["lekID"] = item.lek?.lekID
@@ -57,7 +56,7 @@ const CheckoutForm = ({ data, userInput, LekIDAndTimesBought }: orderSummaryProp
       grandTotal += (item.kolicina! * item.lek?.price!) - data.totalPrice * parseInt(discount!) / 100;
       totalItems += item.kolicina!;
     })
-    //console.log(data.cartItems)
+    console.log(data.cartItems)
     const myOrder = {
       pickupName: userInput.name,
       pickupPhoneNumber: userInput.phoneNumber,
@@ -97,8 +96,8 @@ const CheckoutForm = ({ data, userInput, LekIDAndTimesBought }: orderSummaryProp
     localStorage.setItem("timer", timeInSeconds.toString())
     localStorage.removeItem("discount");
     setIsProcessing(false);
-    console.log()
-    dispatch(clearCart(shoppingCartFromStore));
+    //dispatch(setShoppingCart(initalState));
+    deleteShoppingCart(shoppingCartFromStore[0].shoppingCartID);
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {

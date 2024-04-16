@@ -49,7 +49,7 @@ function Register() {
             <input
               type="text"
               className='form-control'
-              placeholder='Enter UserName'
+              placeholder='Enter Email'
               name="userName"
               value={userInput.userName}
               onChange={handleUserInput}
@@ -96,7 +96,6 @@ function Register() {
               onChange={handleUserInput}>
               <option value="">--Select Role--</option>
               <option value="customer">Customer</option>
-              <option value="admin">Admin</option>
               <option></option>
             </select>
           </div>

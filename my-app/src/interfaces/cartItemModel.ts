@@ -5,4 +5,5 @@ export interface cartItemModel {
     lekID?: number;
     lek?: LekModel;
     kolicina?: number;
+    shoppingCartID : number
 }

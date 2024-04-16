@@ -32,8 +32,14 @@ const shoppingCartApi = createApi({
                 },
             }),
             invalidatesTags : ["ShoppingCarts"]
+        }),
+        deleteShoppingCart : builder.mutation({
+            query : (id) => ({
+                url : "ShoppingCart/" + id,
+                method : "DELETE",
+            }),
         })
     })
 })
-export const { useGetShoppingCartQuery, useUpdateShoppingCartMutation } = shoppingCartApi
+export const { useGetShoppingCartQuery, useUpdateShoppingCartMutation, useDeleteShoppingCartMutation } = shoppingCartApi
 export default shoppingCartApi;

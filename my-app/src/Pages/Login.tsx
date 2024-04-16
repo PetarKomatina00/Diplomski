@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { setLoggedInUser } from '../Storage/Redux/userAuthSlice';
 import { useNavigate } from 'react-router-dom';
 import MainLoader from '../Components/Layout/Page/Lekovi/Common/MainLoader';
+import toastNotify from '../Helper/toastNotify';
 function Login() {
     const [loginUser] = useLoginUserMutation();
     const [loading, setLoading] = useState(false)
@@ -25,6 +26,7 @@ function Login() {
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log(e);
         setLoading(true);
         const response: apiResponse = await loginUser({
             userName: userInput.userName,
@@ -38,14 +40,18 @@ function Login() {
             navigate("/");
         }
         else if (response.error) {
-            setError(response.error.errorMessages[0])
+            toastNotify(response.error.data.errorMessages[0], "error");
         }
+        setLoading(false);
+    }
+    const handleRegister = () => {
+        navigate("/register")
     }
     return (
         <div className='container text-center'>
             {loading && <MainLoader/>}
             <form method='post' onSubmit={handleSubmit}>
-                <h1 className='mt-5'>Login</h1>
+                <h1 className='mt-5 '>Login</h1>
                 <div className='mt-5'>
                     <div className='col-sm-6 offset-sm-3 col-xs-12 mt-4'>
                         <input
@@ -76,6 +82,17 @@ function Login() {
                         className='btn btn-success'
                         style={{ width: "200px" }}>
                         Login
+                    </button>
+                </div>
+                <div className='row mt-2'>
+                    <span className="">OR</span>
+                </div>
+                <div className='mt-2'>
+                    <button 
+                    className='btn btn-success'
+                    style={{ width: "200px" }}
+                    onClick={handleRegister}>
+                        Register
                     </button>
                 </div>
             </form>
